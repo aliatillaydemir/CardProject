@@ -31,6 +31,7 @@ public class Test extends javax.swing.JFrame {
 
     //constructer
     public Test() {
+        System.out.println("Hello ati");
         // JFrame özelliklerini ayarlıyoruz
         setTitle("Futbolcu ve Basketbolcu Kart Oyunu");
         setExtendedState(JFrame.MAXIMIZED_BOTH); //full screen yaptım!
@@ -216,6 +217,7 @@ public class Test extends javax.swing.JFrame {
             public void run() {
                 new Test().setVisible(true);
             }
+
         });
     }
 }
