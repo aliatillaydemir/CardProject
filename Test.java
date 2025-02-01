@@ -31,6 +31,7 @@ public class Test extends javax.swing.JFrame {
 
     //constructer
     public Test() {
+        System.out.println("furki zorrrrrrrrrrrtttttttttttttt");
         // JFrame özelliklerini ayarlıyoruz
         setTitle("Futbolcu ve Basketbolcu Kart Oyunu");
         setExtendedState(JFrame.MAXIMIZED_BOTH); //full screen yaptım!
