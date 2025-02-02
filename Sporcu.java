@@ -1,13 +1,13 @@
 public  abstract  class Sporcu {
     private String sporcuIsim;
     private String sporcuTakim;
-
+    private String imagePath;
 
     //parametreli constructer
 public Sporcu(String sporcuIsim, String sporcuTakim) {
     this.sporcuIsim = sporcuIsim;
     this.sporcuTakim = sporcuTakim;
-
+    this.imagePath = imagePath;
 }
 //parametresiz constructer
 public  Sporcu(){
@@ -37,7 +37,9 @@ abstract void sporcuPuaniGoster();
         return "Sporcu[Ad:" + this.getSporcuIsim() + ", Takım:" + this.getSporcuTakim() + "]";
     }
 
-
+    public String getImagePath() {
+        return imagePath;
+    }
 
     public static void main(String[] args) {
 
