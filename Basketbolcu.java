@@ -78,6 +78,7 @@ public  class  Basketbolcu extends  Sporcu {
     public int getSerbestAtis() {
         return serbestAtis;
     }
+
 }
 //}
 

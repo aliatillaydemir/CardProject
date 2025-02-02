@@ -154,6 +154,7 @@ public class Test extends javax.swing.JFrame {
             deste.add(new Basketbolcu(85, 80, 83, "Giannis Antetokounmpo", "Bucks"));
             deste.add(new Basketbolcu(88, 86, 87, "Shaquille O'Neal", "Lakers"));
 
+
             Collections.shuffle(deste); // Shuffle the deck
 
             // Create user and computer players
@@ -197,32 +198,20 @@ public class Test extends javax.swing.JFrame {
         ImageIcon kapaliKart = resizeImage("images/black-Kopya.jpg", kartGenislik, kartYukseklik);
 
         kartlar = new JButton[16];
-        for (int i = 0; i < 8; i++) {  // Futbolcular
-            if (deste.get(i) instanceof Futbolcu) {
-                Futbolcu f = (Futbolcu) deste.get(i);
-                kartlar[i] = new JButton("<html><center>"
-                        +  f.getPenaltı() + "<br>"
-                        +  f.getKaleciKarsiKarsiya() + "<br>"
-                        +  f.getSerbestAtis()
-                        + "</center></html>");
-            }
-        }
-
-        for (int i = 8; i < 16; i++) {  // Basketbolcular
-            if (deste.get(i) instanceof Basketbolcu) {
-                Basketbolcu b = (Basketbolcu) deste.get(i);
-                kartlar[i] = new JButton("<html><center>"
-                        +  b.getUcluk() + "<br>"
-                        +  b.getIkilik() + "<br>"
-                        +  b.getSerbestAtis()
-                        + "</center></html>");
-            }
-        }
 
 
 
         for (int i = 0; i < 16; i++) {
             kartlar[i] = new JButton();
+            kartlar[i] = new JButton("<html>"
+                    + "<div style='text-align: center;'>"
+                    + "<p style='margin: 0; position: relative; top: -10px;'>Üst Yazı</p>"
+                    + "<p style='margin: 10px 0;'>Orta Yazı</p>"
+                    + "<p style='margin: 0; position: relative; top: 10px;'>Alt Yazı</p>"
+                    + "</div>"
+                    + "</html>");
+            kartlar[i].setForeground(Color.RED); // Yazı rengini kırmızı yapar
+            kartlar[i].setFont(new Font("Arial", Font.BOLD, 20));
             kartlar[i].setPreferredSize(new Dimension(kartGenislik, kartYukseklik));
             //yeni algoritma kur kartlar sırasına göre dağıtılıyor!!!
             if (i < 4) {
