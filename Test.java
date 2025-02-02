@@ -23,22 +23,23 @@ public class Test extends javax.swing.JFrame {
     private JLabel lblBilgisayarSkor;
     private JButton[] kartlar;
     private String[] kartResimleri = {
-            "images/futbolcu1.jpg",
-            "images/futbolcu2.jpg",
-            "images/futbolcu3.jpg",
-            "images/futbolcu4.jpg",
-            "images/futbolcu5.jpg",
-            "images/futbolcu6.jpg",
-            "images/futbolcu7.jpg",
-            "images/futbolcu8.jpg",
-            "images/basketbolcu1.jpg",
-            "images/basketbolcu2.jpg",
-            "images/basketbolcu3.jpg",
-            "images/basketbolcu4.jpg",
-            "images/basketbolcu5.jpg",
-            "images/basketbolcu6.jpg",
-            "images/basketbolcu7.jpg",
-            "images/basketbolcu8.jpg"
+            "images/Ronaldo.jpg",
+            "images/Kevin De Bruyne.jpg",
+            "images/Neymar.jpg",
+            "images/Kylian Mbappe.jpg",
+            "images/Virgil van Dijk.jpg",
+            "images/Lionel Messi.jpg",
+            "images/Mohamed Salah.jpg",
+            "images/Virgil van Dijk.jpg",
+            "images/Robert Lewandowski.jpg",
+            "images/LeBron James.jpg",
+            "images/Stephen Curry.jpg",
+            "images/Shaquille O'Neal",
+            "images/Michael Jordan.jpg",
+            "images/Kobe Bryant.jpg",
+            "images/James Harden.jpg",
+            "images/Giannis Antetokounmpo.jpg",
+            "images/Kevin Durant.jpg"
     };
     private List<Sporcu> deste = new ArrayList<>();
     private Kullanıcı kullanıcı;
@@ -61,7 +62,7 @@ public class Test extends javax.swing.JFrame {
         int height = Toolkit.getDefaultToolkit().getScreenSize().height;
 
         try{
-            ImageIcon originalIcon = new ImageIcon("C:\\Users\\Dell\\Desktop\\KartProject\\images\\stat.jpg");
+            ImageIcon originalIcon = new ImageIcon("images/stat.jpg");
             Image scaledImage = originalIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
@@ -193,21 +194,44 @@ public class Test extends javax.swing.JFrame {
         altPanel.setOpaque(false);
 
 // Kapalı kart görseli (bilgisayarın kartları için)
-        ImageIcon kapaliKart = resizeImage("images/kart_arka.jpg", kartGenislik, kartYukseklik);
+        ImageIcon kapaliKart = resizeImage("images/black-Kopya.jpg", kartGenislik, kartYukseklik);
 
         kartlar = new JButton[16];
+        for (int i = 0; i < 8; i++) {  // Futbolcular
+            if (deste.get(i) instanceof Futbolcu) {
+                Futbolcu f = (Futbolcu) deste.get(i);
+                kartlar[i] = new JButton("<html><center>"
+                        +  f.getPenaltı() + "<br>"
+                        +  f.getKaleciKarsiKarsiya() + "<br>"
+                        +  f.getSerbestAtis()
+                        + "</center></html>");
+            }
+        }
+
+        for (int i = 8; i < 16; i++) {  // Basketbolcular
+            if (deste.get(i) instanceof Basketbolcu) {
+                Basketbolcu b = (Basketbolcu) deste.get(i);
+                kartlar[i] = new JButton("<html><center>"
+                        +  b.getUcluk() + "<br>"
+                        +  b.getIkilik() + "<br>"
+                        +  b.getSerbestAtis()
+                        + "</center></html>");
+            }
+        }
+
+
 
         for (int i = 0; i < 16; i++) {
             kartlar[i] = new JButton();
             kartlar[i].setPreferredSize(new Dimension(kartGenislik, kartYukseklik));
-
+            //yeni algoritma kur kartlar sırasına göre dağıtılıyor!!!
             if (i < 4) {
                 // Bilgisayarın futbol kartları (kapalı)
                 kartlar[i].setIcon(kapaliKart);
                 ustPanel.add(kartlar[i]);
             } else if (i < 8) {
                 // Oyuncunun futbol kartları (açık)
-                ImageIcon icon = resizeImage(kartResimleri[i - 4], kartGenislik, kartYukseklik);
+                ImageIcon icon = resizeImage(kartResimleri[i], kartGenislik, kartYukseklik);
                 kartlar[i].setIcon(icon);
                 altPanel.add(kartlar[i]);
             } else if (i < 12) {
@@ -216,7 +240,7 @@ public class Test extends javax.swing.JFrame {
                 ustPanel.add(kartlar[i]);
             } else {
                 // Oyuncunun basketbol kartları (açık)
-                ImageIcon icon = resizeImage(kartResimleri[i - 4], kartGenislik, kartYukseklik);
+                ImageIcon icon = resizeImage(kartResimleri[i], kartGenislik, kartYukseklik);
                 kartlar[i].setIcon(icon);
                 altPanel.add(kartlar[i]);
             }
