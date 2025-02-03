@@ -1,341 +1,353 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.*;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.stream.Collectors;
 
-public class Test extends javax.swing.JFrame {
+public class Test extends JFrame {
     private JButton btnBasla;
     private JLabel lblKullaniciSkor;
     private JLabel lblBilgisayarSkor;
-    private JButton[] kartlar;
-    private String[] kartResimleri = {
-            "images/futbolcu1.jpg",
-            "images/futbolcu2.jpg",
-            "images/futbolcu3.jpg",
-            "images/futbolcu4.jpg",
-            "images/futbolcu5.jpg",
-            "images/futbolcu6.jpg",
-            "images/futbolcu7.jpg",
-            "images/futbolcu8.jpg",
-            "images/basketbolcu1.jpg",
-            "images/basketbolcu2.jpg",
-            "images/basketbolcu3.jpg",
-            "images/basketbolcu4.jpg",
-            "images/basketbolcu5.jpg",
-            "images/basketbolcu6.jpg",
-            "images/basketbolcu7.jpg",
-            "images/basketbolcu8.jpg"
-    };
-    private List<Sporcu> deste = new ArrayList<>();
-    private Kullanıcı kullanıcı;
+    private JLabel lblSelectedFeature;
+    private JPanel contentPanel;
+    private JPanel middlePanel;
+    private JLabel playerSelectedCard;
+    private JLabel computerSelectedCard;
+    private Kullanıcı kullanici;
     private Bilgisayar bilgisayar;
-    private int i = 0;
-    private Image backgroundImage; // Background image for the whole frame
-    private JPanel contentPanel; // Main content panel
-    private static final Logger logger = Logger.getLogger(Test.class.getName());
+    private List<JButton> computerButtons;
+    private boolean isPlayerTurn = true;
 
-    // Constructor
     public Test() {
-        logger.info("Game Started!");
-        setTitle("Futbolcu ve Basketbolcu Kart Oyunu");
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Fullscreen mode
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setLayout(null); // Freeform layout
+        kullanici = new Kullanıcı("1", "Kullanıcı", 0);
+        bilgisayar = new Bilgisayar("2", "Bilgisayar", 0);
+        initializeUI();
+    }
 
-        int width = Toolkit.getDefaultToolkit().getScreenSize().width;
-        int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+    private void initializeCards() {
+        List<Sporcu> footballers = Arrays.asList(
+            new Futbolcu("Ronaldo", "Manchester United", 95, 90, 92),
+            new Futbolcu("Messi", "PSG", 90, 95, 94),
+            new Futbolcu("Neymar", "PSG", 88, 89, 90),
+            new Futbolcu("Mbappe", "PSG", 87, 85, 93),
+            new Futbolcu("Lewandowski", "Dortmund", 95, 100, 87),
+            new Futbolcu("De Bruyne", "Man City", 82, 90, 85),
+            new Futbolcu("Salah", "Liverpool", 80, 95, 90),
+            new Futbolcu("Dijk", "Liverpool", 87, 87, 87)
+        );
 
-        try{
-            ImageIcon originalIcon = new ImageIcon("C:\\Users\\Dell\\Desktop\\KartProject\\images\\stat.jpg");
-            Image scaledImage = originalIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        List<Sporcu> basketballPlayers = Arrays.asList(
+            new Basketbolcu(90, 85, 88, "LeBron James", "Lakers"),
+            new Basketbolcu(88, 90, 85, "Curry", "Warriors"),
+            new Basketbolcu(87, 86, 89, "Durant", "Nets"),
+            new Basketbolcu(85, 87, 86, "Giannis", "Bucks"),
+            new Basketbolcu(80, 84, 98, "James Harden", "76ers"),
+            new Basketbolcu(78, 90, 95, "Kobe Bryant", "Lakers"),
+            new Basketbolcu(97, 88, 79, "Michael Jordan", "Bulls"),
+            new Basketbolcu(95, 82, 80, "Shaquille O'Neal", "Lakers")
+        );
 
-            // Set background image on JLabel
-            JLabel backgroundLabel = new JLabel(scaledIcon);
-            backgroundLabel.setBounds(0, 0, width, height);
+        Collections.shuffle(footballers);
+        Collections.shuffle(basketballPlayers);
 
-            // Create contentPanel and set layout
-            contentPanel = new JPanel();
-            contentPanel.setLayout(null);
-            contentPanel.add(backgroundLabel); // Add background image to the panel
-        }catch (Exception e){
-            logger.log(Level.SEVERE, "Arka plan resmi yüklenirken hata oluştu!", e);
+        for (int i = 0; i < 4; i++) {
+            kullanici.getKartListesi().add(footballers.get(i));
+            kullanici.getKartListesi().add(basketballPlayers.get(i));
+            bilgisayar.getKartListesi().add(footballers.get(i + 4));
+            bilgisayar.getKartListesi().add(basketballPlayers.get(i + 4));
         }
+    }
 
+    private void initializeUI() {
+        setTitle("Kart Oyunu");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1000, 800);
+        setLocationRelativeTo(null);
 
-        // Create buttons and labels
+        contentPanel = new JPanel();
+        contentPanel.setLayout(new BorderLayout());
+        add(contentPanel);
+
+        JPanel controlPanel = new JPanel();
         btnBasla = new JButton("Oyunu Başlat");
         lblKullaniciSkor = new JLabel("Kullanıcı Skor: 0");
         lblBilgisayarSkor = new JLabel("Bilgisayar Skor: 0");
+        lblSelectedFeature = new JLabel("Seçilen Özellik: ?");
 
-        // Set positions of components
-        btnBasla.setBounds(width / 2 - 100, height / 2 - 50, 200, 50);
-        lblKullaniciSkor.setBounds(10, 10, 200, 30);
-        lblBilgisayarSkor.setBounds(10, 50, 200, 30);
-        btnBasla.setFocusPainted(false);
+        controlPanel.add(btnBasla);
+        controlPanel.add(lblKullaniciSkor);
+        controlPanel.add(lblBilgisayarSkor);
+        controlPanel.add(lblSelectedFeature);
 
-        // Add event listeners to buttons
-        btnBasla.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try{
-                    oyunBaslat();
-                    JPanel grayPanel = new JPanel();
-                    grayPanel.setLayout(null);
-                    grayPanel.setBounds(750, 350, 400, 200);
-                    grayPanel.setBackground(Color.BLACK);
-                    contentPanel.add(grayPanel);
-                    contentPanel.setComponentZOrder(grayPanel, 0); // Bring grayPanel to the front
-                    contentPanel.repaint();
-                    contentPanel.revalidate();
-                    btnBasla.setVisible(false); // Hide the start button
-                }catch (Exception ex){
-                    logger.log(Level.SEVERE, "Oyunu başlatırken hata oluştu!", ex);
-                }
+        contentPanel.add(controlPanel, BorderLayout.NORTH);
 
-            }
-        });
-        contentPanel.add(btnBasla);
-        contentPanel.add(lblKullaniciSkor);
-        contentPanel.add(lblBilgisayarSkor);
-        setContentPane(contentPanel);
-        setSize(width, height);
+        btnBasla.addActionListener(e -> startGame());
     }
 
-    public ImageIcon resizeImage(String imagePath, int width, int height) {
+    private void startGame() {
+        kullanici.setSkor(0);
+        bilgisayar.setSkor(0);
+        isPlayerTurn = true;
+        updateScores();
+        initializeCards();
+        setupGameUI();
+    }
+
+    private void updateScores() {
+        lblKullaniciSkor.setText("Kullanıcı Skor: " + kullanici.getSkor());
+        lblBilgisayarSkor.setText("Bilgisayar Skor: " + bilgisayar.getSkor());
+    }
+
+    private void setupGameUI() {
+        contentPanel.removeAll();
+
+        JPanel controlPanel = new JPanel();
+        controlPanel.add(btnBasla);
+        controlPanel.add(lblKullaniciSkor);
+        controlPanel.add(lblBilgisayarSkor);
+        controlPanel.add(lblSelectedFeature);
+        contentPanel.add(controlPanel, BorderLayout.NORTH);
+
+        JPanel gamePanel = new JPanel(new GridLayout(3, 1, 10, 10));
+        
+        JPanel computerPanel = createCardPanel("Bilgisayar Kartları", bilgisayar.getKartListesi(), true);
+        gamePanel.add(computerPanel);
+
+        middlePanel = new JPanel(new GridLayout(1, 2, 20, 0));
+        middlePanel.setBorder(BorderFactory.createTitledBorder("Seçilen Kartlar"));
+        
+        playerSelectedCard = new JLabel();
+        computerSelectedCard = new JLabel();
+        playerSelectedCard.setPreferredSize(new Dimension(100, 150));
+        computerSelectedCard.setPreferredSize(new Dimension(100, 150));
+        
+        middlePanel.add(playerSelectedCard);
+        middlePanel.add(computerSelectedCard);
+        gamePanel.add(middlePanel);
+
+        JPanel playerPanel = createCardPanel("Kullanıcı Kartları", kullanici.getKartListesi(), false);
+        gamePanel.add(playerPanel);
+
+        contentPanel.add(gamePanel, BorderLayout.CENTER);
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }
+
+    private JPanel createCardPanel(String title, List<Sporcu> cards, boolean isComputer) {
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createTitledBorder(title));
+        panel.setLayout(new FlowLayout());
+
+        if (isComputer) {
+            computerButtons = new ArrayList<>();
+        }
+
+        for (Sporcu card : cards) {
+            JButton cardButton = createCardButton(card, isComputer);
+            if (isComputer) {
+                computerButtons.add(cardButton);
+            }
+            panel.add(cardButton);
+        }
+
+        return panel;
+    }
+
+    private JButton createCardButton(Sporcu card, boolean isComputer) {
+        JButton button = new JButton();
+        Image resizedImage = resizeImage(card.getImagePath());
+        
+        if (resizedImage != null) {
+            button.setIcon(new ImageIcon(resizedImage));
+        } else {
+            StringBuilder cardText = new StringBuilder(card.getSporcuIsim() + " - " + card.getSporcuTakim());
+            
+            if (card instanceof Futbolcu) {
+                Futbolcu futbolcu = (Futbolcu) card;
+                cardText.append("<br><br>1: ").append(futbolcu.getPenaltı())
+                        .append(",<br>2: ").append(futbolcu.getSerbestAtis())
+                        .append(",<br>3: ").append(futbolcu.getKaleciKarsiKarsiya());
+            } else if (card instanceof Basketbolcu) {
+                Basketbolcu basketbolcu = (Basketbolcu) card;
+                cardText.append("<br><br>1: ").append(basketbolcu.getIkilik())
+                        .append(",<br>2: ").append(basketbolcu.getUcluk())
+                        .append(",<br>3: ").append(basketbolcu.getSerbestAtis());
+            }
+            
+            button.setText("<html>" + cardText.toString() + "</html>");
+        }
+        
+        button.setPreferredSize(new Dimension(100, 150));
+        
+        if (!isComputer) {
+            button.addActionListener(e -> handlePlayerCardClick(button, card));
+        }
+        
+        return button;
+    }
+
+    private void handlePlayerCardClick(JButton button, Sporcu card) {
+        if (!isPlayerTurn) return;
+
+        playerSelectedCard.setIcon(button.getIcon());
+        button.setEnabled(false);
+
+        // Remove the card from the player's list
+        kullanici.getKartListesi().remove(card);
+
+        computerTurn(card);
+    }
+
+    private void computerTurn(Sporcu playerCard) {
+        List<Sporcu> availableCards = bilgisayar.getKartListesi().stream()
+            .filter(card -> (playerCard instanceof Futbolcu && card instanceof Futbolcu) ||
+                            (playerCard instanceof Basketbolcu && card instanceof Basketbolcu))
+            .collect(Collectors.toList());
+
+        if (!availableCards.isEmpty()) {
+            Sporcu computerCard = availableCards.get(new Random().nextInt(availableCards.size()));
+            bilgisayar.getKartListesi().remove(computerCard);
+
+            JButton selectedButton = computerButtons.stream()
+                .filter(b -> b.isEnabled() && b.getText().contains(computerCard.getSporcuIsim()))
+                .findFirst()
+                .orElse(null);
+
+            if (selectedButton != null) {
+                computerSelectedCard.setIcon(selectedButton.getIcon());
+                selectedButton.setEnabled(false);
+                compareCards(playerCard, computerCard);
+            }
+        }
+
+        isPlayerTurn = true;
+        checkGameOver();
+    }
+
+    private void compareCards(Sporcu playerCard, Sporcu computerCard) {
+        String selectedFeature = "";
+
+        if (playerCard instanceof Futbolcu && computerCard instanceof Futbolcu) {
+            Futbolcu pF = (Futbolcu) playerCard;
+            Futbolcu cF = (Futbolcu) computerCard;
+
+            // Randomly select a feature to compare
+            int featureIndex = new Random().nextInt(3);
+            int playerValue = 0, computerValue = 0;
+
+            switch (featureIndex) {
+                case 0:
+                    playerValue = pF.getPenaltı();
+                    computerValue = cF.getPenaltı();
+                    selectedFeature = "1";
+                    break;
+                case 1:
+                    playerValue = pF.getSerbestAtis();
+                    computerValue = cF.getSerbestAtis();
+                    selectedFeature = "2";
+                    break;
+                case 2:
+                    playerValue = pF.getKaleciKarsiKarsiya();
+                    computerValue = cF.getKaleciKarsiKarsiya();
+                    selectedFeature = "3";
+                    break;
+            }
+
+            if (playerValue > computerValue) {
+                kullanici.setSkor(kullanici.getSkor() + 10);
+            } else if (computerValue > playerValue) {
+                bilgisayar.setSkor(bilgisayar.getSkor() + 10);
+            }
+        } else if (playerCard instanceof Basketbolcu && computerCard instanceof Basketbolcu) {
+            Basketbolcu pB = (Basketbolcu) playerCard;
+            Basketbolcu cB = (Basketbolcu) computerCard;
+
+            // Randomly select a feature to compare
+            int featureIndex = new Random().nextInt(3);
+            int playerValue = 0, computerValue = 0;
+
+            switch (featureIndex) {
+                case 0:
+                    playerValue = pB.getIkilik();
+                    computerValue = cB.getIkilik();
+                    selectedFeature = "1";
+                    break;
+                case 1:
+                    playerValue = pB.getUcluk();
+                    computerValue = cB.getUcluk();
+                    selectedFeature = "2";
+                    break;
+                case 2:
+                    playerValue = pB.getSerbestAtis();
+                    computerValue = cB.getSerbestAtis();
+                    selectedFeature = "3";
+                    break;
+            }
+
+            if (playerValue > computerValue) {
+                kullanici.setSkor(kullanici.getSkor() + 10);
+            } else if (computerValue > playerValue) {
+                bilgisayar.setSkor(bilgisayar.getSkor() + 10);
+            }
+        }
+
+        lblSelectedFeature.setText("Seçilen Özellik: " + selectedFeature);
+        updateScores();
+    }
+
+    private void checkGameOver() {
+        System.out.println("Kullanıcı kart listesi boyutu: " + kullanici.getKartListesi().size());
+        System.out.println("Bilgisayar kart listesi boyutu: " + bilgisayar.getKartListesi().size());
+
+        boolean allCardsPlayed = bilgisayar.getKartListesi().isEmpty() && kullanici.getKartListesi().isEmpty();
+        System.out.println("Checking game over: " + allCardsPlayed); // Debugging line
+        if (allCardsPlayed) {
+            String winner;
+            if (kullanici.getSkor() > bilgisayar.getSkor()) {
+                winner = "Kullanıcı";
+            } else if (kullanici.getSkor() < bilgisayar.getSkor()) {
+                winner = "Bilgisayar";
+            } else {
+                winner = "Berabere";
+            }
+            
+            JOptionPane.showMessageDialog(this, 
+                "Oyun bitti!\nSonuç: " + winner + "\nKullanıcı Skor: " + kullanici.getSkor() + 
+                "\nBilgisayar Skor: " + bilgisayar.getSkor(),
+                "Oyun Sonucu", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private Image resizeImage(String imagePath) {
         try {
-            ImageIcon icon = new ImageIcon(imagePath);
-            Image img = icon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT);
-            return new ImageIcon(img);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Resim yeniden boyutlandırılırken hata oluştu: " + imagePath, e);
+            URL imageUrl = getClass().getResource("/" + imagePath);
+            if (imageUrl == null) {
+                System.err.println("Cannot find image: " + imagePath);
+                return null;
+            }
+            
+            BufferedImage originalImage = ImageIO.read(imageUrl);
+            if (originalImage == null) {
+                System.err.println("Failed to read image: " + imagePath);
+                return null;
+            }
+            
+            return originalImage.getScaledInstance(100, 150, Image.SCALE_SMOOTH);
+        } catch (IOException e) {
+            System.err.println("Error loading image " + imagePath + ": " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
 
-    // Start the game
-    public void oyunBaslat() {
-
-
-        btnBasla.setEnabled(false); // Disable the start button after clicking
-
-        // Create cards
-        try {
-            deste.add(new Futbolcu("Ronaldo", "Juventus", 95, 90, 90));
-            deste.add(new Futbolcu("Lionel Messi", "Barça", 100, 75, 90));
-            deste.add(new Futbolcu("Neymar", "Barça", 90, 95, 95));
-            deste.add(new Futbolcu("Robert Lewandowski", "Dortmunt", 95, 100, 95));
-            deste.add(new Futbolcu("Kevin De Bruyne", "Man City", 88, 90, 85));
-            deste.add(new Futbolcu("Mohamed Salah", "Liverpool", 85, 88, 90));
-            deste.add(new Futbolcu("Virgil van Dijk", "Liverpool", 80, 85, 88));
-            deste.add(new Futbolcu("Kylian Mbappe", "PSG", 92, 80, 90));
-
-            deste.add(new Basketbolcu(85, 85, 85, "LeBron James", "Lakers"));
-            deste.add(new Basketbolcu(90, 90, 90, "Stephen Curry", "Warriors"));
-            deste.add(new Basketbolcu(88, 85, 89, "Kevin Durant", "Nets"));
-            deste.add(new Basketbolcu(84, 80, 82, "James Harden", "76ers"));
-            deste.add(new Basketbolcu(82, 78, 80, "Kobe Bryant", "Lakers"));
-            deste.add(new Basketbolcu(90, 88, 85, "Michael Jordan", "Bulls"));
-            deste.add(new Basketbolcu(85, 80, 83, "Giannis Antetokounmpo", "Bucks"));
-            deste.add(new Basketbolcu(88, 86, 87, "Shaquille O'Neal", "Lakers"));
-
-            Collections.shuffle(deste); // Shuffle the deck
-
-            // Create user and computer players
-            kullanıcı = new Kullanıcı("0", "Ati PC", 0);
-            bilgisayar = new Bilgisayar("1", "Furki", 0);
-
-            // Distribute cards
-            for (; i < deste.size(); i++) {
-                if (i % 2 == 0) {
-                    kullanıcı.getKartListesi().add(deste.get(i));
-                } else {
-                    bilgisayar.getKartListesi().add(deste.get(i));
-                }
-            } logger.info("Kartlar başarıyla dağıtıldı.");
-        }
-        catch (Exception e) {
-            logger.log(Level.SEVERE, "Kartları dağıtırken bir hata oluştu!",e);
-        }
-
-
-
-
-
-        int kartGenislik = 150;
-        int kartYukseklik = 200;
-        int width = Toolkit.getDefaultToolkit().getScreenSize().width;
-        int height = Toolkit.getDefaultToolkit().getScreenSize().height;
-
-
-// Üst panel (bilgisayarın kartları)
-        JPanel ustPanel = new JPanel(new GridLayout(1, 8, 50, 10)); // 1 sıra, 8 kart
-        ustPanel.setBounds(140, 50, 1600, 200);
-        ustPanel.setOpaque(false); //-> opaklığı ayarlarız
-
-// Alt panel (oyuncunun kartları)
-        JPanel altPanel = new JPanel(new GridLayout(1, 8, 50, 10)); // 1 sıra, 8 kart
-        altPanel.setBounds(140, height - 300, 1600, 200);
-        altPanel.setOpaque(false);
-
-// Kapalı kart görseli (bilgisayarın kartları için)
-        ImageIcon kapaliKart = resizeImage("images/kart_arka.jpg", kartGenislik, kartYukseklik);
-
-        kartlar = new JButton[16];
-
-        for (int i = 0; i < 16; i++) {
-            kartlar[i] = new JButton();
-            kartlar[i].setPreferredSize(new Dimension(kartGenislik, kartYukseklik));
-
-            if (i < 4) {
-                // Bilgisayarın futbol kartları (kapalı)
-                kartlar[i].setIcon(kapaliKart);
-                ustPanel.add(kartlar[i]);
-            } else if (i < 8) {
-                // Oyuncunun futbol kartları (açık)
-                ImageIcon icon = resizeImage(kartResimleri[i - 4], kartGenislik, kartYukseklik);
-                kartlar[i].setIcon(icon);
-                altPanel.add(kartlar[i]);
-            } else if (i < 12) {
-                // Bilgisayarın basketbol kartları (kapalı)
-                kartlar[i].setIcon(kapaliKart);
-                ustPanel.add(kartlar[i]);
-            } else {
-                // Oyuncunun basketbol kartları (açık)
-                ImageIcon icon = resizeImage(kartResimleri[i - 4], kartGenislik, kartYukseklik);
-                kartlar[i].setIcon(icon);
-                altPanel.add(kartlar[i]);
-            }
-        }
-
-// Ana panelleri içeriğe ekle ve güncelle
-        contentPanel.add(ustPanel);
-        contentPanel.add(altPanel);
-        contentPanel.revalidate();
-        contentPanel.repaint();
-
-    }
-
-    public Sporcu bilgisayarKartSec(boolean futbolcuMu) {
-        for (Sporcu kart : bilgisayar.getKartListesi()) {
-            if (futbolcuMu && kart instanceof Futbolcu) {
-                return kart;
-            } else if (!futbolcuMu && kart instanceof Basketbolcu) {
-                return kart;
-            }
-        }
-        return null; // Eğer uygun kart yoksa
-    }
-
-
-
-
-    //Eksik sırasıyla bi kullanıcı bir bilgisayar kart seçecek
-    //bilgisayar otomatik atayacak kullanıcı seçtikten sonra;
-    public void kartSec(JButton secilenKartButon, int kartIndex) {
-        try {
-            if (kullanıcı.getKartListesi().isEmpty() || bilgisayar.getKartListesi().isEmpty()) {
-                logger.info("Oyun Bitti.");
-                return;
-            }
-
-            // Kullanıcının seçtiği kart
-            Sporcu kullanıcıKart = kullanıcı.getKartListesi().get(kartIndex);
-
-            // Bilgisayarın aynı kategoriden kart seçmesi
-            Sporcu bilgisayarKart = bilgisayarKartSec(kullanıcıKart instanceof Futbolcu);
-
-            if (bilgisayarKart == null) {
-                logger.warning("Bilgisayar uygun kart bulamadı!");
-                return;
-            }
-
-            // Seçilen kartları orta alana ekle
-            JPanel ortaPanel = new JPanel(new GridLayout(1, 2, 20, 10));
-            ortaPanel.setBounds(700, 400, 300, 200);
-            ortaPanel.setOpaque(false);
-
-            JButton kullaniciKartGoruntu = new JButton(resizeImage(kullanıcıKart.getImagePath(), 150, 200));
-            JButton bilgisayarKartGoruntu = new JButton(resizeImage("images/kart_arka.jpg", 150, 200));
-
-            ortaPanel.add(kullaniciKartGoruntu);
-            ortaPanel.add(bilgisayarKartGoruntu);
-
-            contentPanel.add(ortaPanel);
-            contentPanel.revalidate();
-            contentPanel.repaint();
-
-            Timer timer = new Timer(1000, event -> {
-                bilgisayarKartGoruntu.setIcon(resizeImage(bilgisayarKart.getImagePath(), 150, 200));
-                contentPanel.repaint();
-
-                // Kazananı belirle
-                kazananBelirle(kullanıcıKart, bilgisayarKart);
-
-                // Kartları listeden çıkar
-                kullanıcı.getKartListesi().remove(kartIndex);
-                bilgisayar.getKartListesi().remove(bilgisayarKart);
-
-                logger.info("Kart seçimi tamamlandı.");
-            });
-            timer.setRepeats(false);
-            timer.start();
-
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Kart seçerken hata oluştu!", e);
-        }
-    }
-
-
-    public void kazananBelirle(Sporcu kullaniciKart, Sporcu bilgisayarKart) {
-        logger.info("Kazanan belirleniyor...");
-
-        if (kullaniciKart instanceof Futbolcu && bilgisayarKart instanceof Futbolcu) {
-            Futbolcu kKart = (Futbolcu) kullaniciKart;
-            Futbolcu bKart = (Futbolcu) bilgisayarKart;
-
-            if (kKart.getPenaltı() > bKart.getPenaltı() & kKart.getKaleciKarsiKarsiya()> bKart.getKaleciKarsiKarsiya() & kKart.getSerbestAtis()>bKart.getSerbestAtis()) {
-                logger.info("Kullanıcı kazandı!");
-                kullanıcı.setSkor(kullanıcı.getSkor() + 10);
-            } else {
-                logger.info("Bilgisayar kazandı!");
-                bilgisayar.setSkor(bilgisayar.getSkor() + 10);
-            }
-        } else if (kullaniciKart instanceof Basketbolcu && bilgisayarKart instanceof Basketbolcu) {
-            Basketbolcu kKart = (Basketbolcu) kullaniciKart;
-            Basketbolcu bKart = (Basketbolcu) bilgisayarKart;
-
-            if (kKart.getSerbestAtis() > bKart.getSerbestAtis() & kKart.getUcluk()>bKart.getUcluk() & kKart.getIkilik()>bKart.getIkilik()) {
-                logger.info("Kullanıcı kazandı!");
-                kullanıcı.setSkor(kullanıcı.getSkor() + 10);
-            } else {
-                logger.info("Bilgisayar kazandı!");
-                bilgisayar.setSkor(bilgisayar.getSkor() + 10);
-            }
-        } else {
-            logger.info("Hatalı eşleşme! Futbolcu ile basketbolcu karşılaştı.");
-        }
-
-        lblKullaniciSkor.setText("Kullanıcı Skor: " + kullanıcı.getSkor());
-        lblBilgisayarSkor.setText("Bilgisayar Skor: " + bilgisayar.getSkor());
-    }
-
     public static void main(String[] args) {
-        Test frame = new Test();
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            Test game = new Test();
+            game.setVisible(true);
+        });
     }
 }
