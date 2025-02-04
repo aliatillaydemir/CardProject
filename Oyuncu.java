@@ -38,7 +38,7 @@ public abstract class  Oyuncu {
 
     //her oyuncu için->bilgiseyar ve kullanıcı classları için(polimorfizmle alınan classslar için)
     public abstract Sporcu kartSec();
-    //return döneceği için void kullanamayız ve bu metod sporcu objesi döneceği için:
+
 
 
 
@@ -53,7 +53,7 @@ public abstract class  Oyuncu {
 
     //fonksiyon arraylist döndürüyor ve arraylist içersinde sporcu objesini depoluyor!---> önemli
     public ArrayList<Sporcu> getKartListesi() {
-        System.out.println(kartListesi.size());
+
         return this.kartListesi;
     }
 

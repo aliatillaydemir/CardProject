@@ -17,7 +17,7 @@ public class Bilgisayar extends  Oyuncu{
     //aldığı kartlar arasından yine random kart seçerek ortaya koyacaktır.  -> tamamen random kart seçilecek bilgiseyarda;
     @Override
     public Sporcu kartSec() {
-        System.out.println("--------------------Bilgiseyar sınıfına özgü kart seçme -------------------------------");
+//        System.out.println("--------------------Bilgiseyar sınıfına özgü kart seçme -------------------------------");
         Random random = new Random();
         int choosen_index=random.nextInt(getKartListesi().size());
        return getKartListesi().remove(choosen_index);           //random seçilen kart çıkarıldı...
@@ -34,10 +34,7 @@ public class Bilgisayar extends  Oyuncu{
         return super.getSkor();
     }
 
-//    @Override
-//    public ArrayList<Sporcu> getKartListesi() {
-//        return super.getKartListesi();
-//    }
+
 
     @Override
     public String getOyuncuAdi() {
@@ -48,11 +45,8 @@ public class Bilgisayar extends  Oyuncu{
     public String getOyuncuID() {
         return super.getOyuncuID();
     }
-//
-//    @Override
-////    public void setKartListesi(ArrayList<Sporcu> kartListesi) {
-////        super.setKartListesi(kartListesi);
-////    }
+
+
 
     @Override
     public void setOyuncuAdi(String oyuncuAdi) {

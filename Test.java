@@ -134,6 +134,7 @@ public class Test extends javax.swing.JFrame {
             }
         });
 
+
         // lambda function;
         btnBasla.addActionListener(e -> oyunuBaşlat());
     }
@@ -219,7 +220,7 @@ public class Test extends javax.swing.JFrame {
     }
 
     private JButton KartButonuOluştur(Sporcu card, boolean isComputer) {
-        JButton button = new JButton();
+        JButton button = new JButton(); //-> butonu oluşturduk
         Image resizedImage = resizeImage(card.getImagePath());
 
         if (resizedImage != null) {
@@ -239,7 +240,7 @@ public class Test extends javax.swing.JFrame {
                         .append(",<br>3: ").append(basketbolcu.getSerbestAtis());
             }
 
-            button.setText("<html>" + cardText.toString() + "</html>");
+            button.setText("<html>" + cardText.toString() + "</html>"); //->set etmeyi bir sor
         }
 
         button.setPreferredSize(new Dimension(100, 150));

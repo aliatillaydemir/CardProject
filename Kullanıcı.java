@@ -26,10 +26,8 @@ public class Kullanıcı extends  Oyuncu {
     @Override
     public Sporcu kartSec() {
         Scanner scanner=new Scanner(System.in);
-        System.out.println("-----------------Kullancı kart seçiyor-----------------");
-        System.out.println(" Seçim aralığı :    0 - " +(getKartListesi().size()-1) +  "  ) "); //index bazında;
         int index=scanner.nextInt();//kullancı kendi istediği kartı seçsin diye;
-        //seçilen kart , kartlistesinden çıkarıldı!
+        //seçilen kart , (index bazı ) kartlistesinden çıkarıldı!
 
         LOGGER.log(Level.INFO, String.valueOf(index));
         return    getKartListesi().remove(index);
@@ -48,10 +46,7 @@ public class Kullanıcı extends  Oyuncu {
         super.setOyuncuAdi(oyuncuAdi);
     }
 
-//    @Override
-//    public void setKartListesi(ArrayList<String> kartListesi) {
-//        super.setKartListesi(kartListesi);
-//    }
+
 
     @Override
     public String getOyuncuID() {
@@ -63,10 +58,7 @@ public class Kullanıcı extends  Oyuncu {
         return super.getOyuncuAdi();
     }
 
-//    @Override
-//    public ArrayList<String> getKartListesi() {
-//        return super.getKartListesi();
-//    }
+
 
     @Override
     public void setSkor(int Skor) {
