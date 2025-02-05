@@ -24,6 +24,10 @@ public class Test extends javax.swing.JFrame {
     private Kullanıcı kullanıcı;
     private Bilgisayar bilgisayar;
     private boolean OyuncuSırasıMı = true;
+    private  JLabel lblAciklama;
+    private StringBuilder cardText;
+
+
 
     private String[] FutbolcuResimleri = {
             "images/Ronaldo.jpg",
@@ -71,11 +75,11 @@ public class Test extends javax.swing.JFrame {
         basketbolcular.add(new Basketbolcu(90, 85, 88, "LeBron James", "Lakers", BasketbolcuResimleri[0]));
         basketbolcular.add(new Basketbolcu(88, 90, 85, "Stephen Curry", "Warriors", BasketbolcuResimleri[1]));
         basketbolcular.add(new Basketbolcu(87, 86, 89, "Kevin Durant", "Nets", BasketbolcuResimleri[7]));
-        basketbolcular.add(new Basketbolcu(85, 87, 86, " Antetokounmpo", "Bucks", BasketbolcuResimleri[6]));
+        basketbolcular.add(new Basketbolcu(85, 87, 86, "Antetokounmpo", "Bucks", BasketbolcuResimleri[6]));
         basketbolcular.add(new Basketbolcu(80, 84, 98, "James Harden", "76ers", BasketbolcuResimleri[5]));
         basketbolcular.add(new Basketbolcu(78, 90, 95, "Kobe Bryant", "Lakers", BasketbolcuResimleri[4]));
         basketbolcular.add(new Basketbolcu(97, 88, 79, "Michael Jordan", "Bulls", BasketbolcuResimleri[3]));
-        basketbolcular.add(new Basketbolcu(95, 82, 80, "Shaquille ", "Lakers", BasketbolcuResimleri[2]));
+        basketbolcular.add(new Basketbolcu(95, 82, 80, "Shaquille", "Lakers", BasketbolcuResimleri[2]));
 
 
         Collections.shuffle(futbolcular);
@@ -90,9 +94,18 @@ public class Test extends javax.swing.JFrame {
         }
         for (Sporcu kart : bilgisayar.getKartListesi()) {
             kart.setImagePath("images/black.jpg");
+
         }
 
 
+
+    }
+
+    //başlangıçta bilgisayar kartları yazılar gizlidir;
+    private void BilgisayarKartlariniGizle(List<JButton> computerButtons) {
+        for (JButton button : computerButtons) {
+            button.setText(""); // Buton metnini gizle
+        }
     }
 
     public void oyunBaslat() {
@@ -161,6 +174,7 @@ public class Test extends javax.swing.JFrame {
         skorGüncelle();
         kartlarıOluştur();
         oyunKur();
+//        BilgisayarKartlariniGizle(computerButtons);
 
     }
 
@@ -187,8 +201,9 @@ public class Test extends javax.swing.JFrame {
 
         middlePanel = new JPanel(new GridLayout(1, 2, 20, 0));
         middlePanel.setBorder(BorderFactory.createTitledBorder("Seçilen Kartlar"));
-        JLabel lblAciklama = new JLabel("Kullanıcın seçtiği Kart:\n");
-        lblAciklama.setFont(new Font("Arial", Font.PLAIN, 20)); // Küçük font boyutu
+        lblAciklama =new JLabel("Seçilen Özellik :");
+        lblAciklama.setFont(new Font("Arial", Font.PLAIN, 20));
+        lblAciklama.setForeground(Color.RED);
         middlePanel.add(lblAciklama);
 
         playerSelectedCard = new JLabel();
@@ -206,6 +221,7 @@ public class Test extends javax.swing.JFrame {
         contentPanel.add(gamePanel, BorderLayout.CENTER);
         contentPanel.revalidate();
         contentPanel.repaint();
+
     }
 
     private JPanel KartPaneliOluştur(String title, List<Sporcu> cards, boolean isComputer) {
@@ -236,41 +252,112 @@ public class Test extends javax.swing.JFrame {
     }
 
 
+
+
+
+
+
+    //kartlar açıldığında--->>>> pc nin kartları güncellenir ve kartların değerleri açılıp orta panale atılınca gösterilir;
+    private void BilgisayarKartGuncelle(Sporcu secilenKart, JButton computerButton) {
+        String resimYolu = "";
+        if (secilenKart instanceof Futbolcu) {
+            for (String resim : FutbolcuResimleri) {
+                if (resim.equals("images/"+ secilenKart.getSporcuIsim() + ".jpg")) {
+                    resimYolu = resim;
+                    break;
+                }
+            }
+        } else if (secilenKart instanceof Basketbolcu) {
+            for (String resim : BasketbolcuResimleri) {
+                if (resim.equals("images/"+ secilenKart.getSporcuIsim() + ".jpg")) {
+                    resimYolu = resim;
+                    break;
+                }
+            }
+        }
+
+        if (resimYolu != null) {
+            secilenKart.setImagePath(resimYolu);//->set ettik
+
+            // Resmi boyutlandırma işlemi
+            Image resizedImage = resizeImage(resimYolu);
+
+            if (resizedImage != null) {
+                // Yeniden boyutlandırılmış resmi ImageIcon olarak set et
+                computerButton.setIcon(new ImageIcon(resizedImage));
+                StringBuilder cardText= new StringBuilder("<html><center>");
+                cardText.append(secilenKart.getSporcuIsim()).append("<br>");
+                if(secilenKart instanceof Futbolcu){
+                    Futbolcu futbolcu = (Futbolcu) secilenKart;
+                    cardText.append(futbolcu.getPenaltı()).append("<br>");
+                    cardText.append(futbolcu.getSerbestAtis()).append("<br>");
+                    cardText.append(futbolcu.getKaleciKarsiKarsiya()).append("<br>");
+                } else if (secilenKart instanceof Basketbolcu) {
+                    Basketbolcu basketbolcu = (Basketbolcu) secilenKart;
+                    cardText.append(basketbolcu.getIkilik()).append("<br>");
+                    cardText.append(basketbolcu.getUcluk()).append("<br>");
+                    cardText.append(basketbolcu.getSerbestAtis()).append("<br>");
+                }
+                cardText.append("</html>");
+                computerButton.setText(cardText.toString());
+                computerButton.repaint(); // Ekranı yeniden çiz
+            } else {
+                System.err.println("Resim boyutlandırma başarısız: " + resimYolu);
+            }
+        } else {
+            System.out.println("Resim bulunamadı... " + secilenKart.getSporcuIsim());
+        }
+
+        // Kartı seçtikten sonra butonu devre dışı bırakıyoruz
+        computerButton.setEnabled(false);
+    }
+
+
+
+
     private JButton KartButonuOluştur(Sporcu card, boolean isComputer) {
         JButton button = new JButton(); // Butonu oluşturduk
         Image resizedImage = resizeImage(card.getImagePath());
 
-        StringBuilder cardText = new StringBuilder(card.getSporcuIsim() + " - " + card.getSporcuTakim());
+        // HTML formatında yazı oluşturuyoruz (Üst üste gelecek şekilde)
+        StringBuilder cardText = new StringBuilder("<html><center>");
+        cardText.append(card.getSporcuIsim()).append("<br>");
+//        cardText.append(card.getSporcuTakim()).append("<br><br>");
 
         if (card instanceof Futbolcu) {
             Futbolcu futbolcu = (Futbolcu) card;
-            cardText.append("<br><br>1: ").append(futbolcu.getPenaltı())
-                    .append(",<br>2: ").append(futbolcu.getSerbestAtis())
-                    .append(",<br>3: ").append(futbolcu.getKaleciKarsiKarsiya());
-
+            cardText.append(futbolcu.getPenaltı()).append("<br>"); // Penaltı değeri
+            cardText.append(futbolcu.getSerbestAtis()).append("<br>"); // Serbest atış değeri
+            cardText.append(futbolcu.getKaleciKarsiKarsiya()); // Kaleci karşı karşıya değeri
         } else if (card instanceof Basketbolcu) {
             Basketbolcu basketbolcu = (Basketbolcu) card;
-            cardText.append("<br><br>1: ").append(basketbolcu.getIkilik())
-                    .append(",<br>2: ").append(basketbolcu.getUcluk())
-                    .append(",<br>3: ").append(basketbolcu.getSerbestAtis());
+            cardText.append(basketbolcu.getIkilik()).append("<br>"); // İkilik değeri
+            cardText.append(basketbolcu.getUcluk()).append("<br>"); // Üçlük değeri
+            cardText.append(basketbolcu.getSerbestAtis()); // Serbest atış değeri
         }
 
-        button.setText("<html>" + cardText.toString() + "</html>");
+        cardText.append("</center></html>"); // HTML kapanışı
+        button.setText(cardText.toString()); // HTML formatlı metni butona ekliyoruz
 
+        // Resmi arka plan olarak ayarlıyoruz
         if (resizedImage != null) {
-            button.setIcon(new ImageIcon(resizedImage));
-            button.setHorizontalTextPosition(SwingConstants.CENTER); // Yazıyı merkeze al
-            button.setVerticalTextPosition(SwingConstants.BOTTOM); // Yazıyı alta al
+            button.setIcon(new ImageIcon(resizedImage)); // Görseli butona yerleştiriyoruz
+            button.setHorizontalTextPosition(SwingConstants.CENTER); // Yazıyı yatayda ortala
+            button.setVerticalTextPosition(SwingConstants.CENTER); // Yazıyı dikeyde ortala
         }
 
-        button.setPreferredSize(new Dimension(100, 200));
-
+        button.setPreferredSize(new Dimension(100, 150)); // Buton boyutu ayarlıyoruz
+        button.setFont(new Font("Arial", Font.PLAIN, 20));
+        button.setContentAreaFilled(false); // İçeriğin alanı doldurulmasın (resmi göstermek için)
+        button.setOpaque(true); // Şeffaflık ayarını kapatıyoruz
+        button.setForeground(Color.WHITE);
         if (!isComputer) {
             button.addActionListener(e -> OyuncuKartSeç(button, card));
         }
 
         return button;
     }
+
 
     private void OyuncuKartSeç(JButton button, Sporcu card) {
         if (!OyuncuSırasıMı) return;
@@ -284,28 +371,38 @@ public class Test extends javax.swing.JFrame {
         computerTurn(card);
     }
 
+
+
+
     private void computerTurn(Sporcu playerCard) {
         // Uygun kartları elle filtreleyerek bir liste oluşturuyoruz
+
         List<Sporcu> availableCards = new ArrayList<>();
 
         for (Sporcu card : bilgisayar.getKartListesi()) {
             if ((playerCard instanceof Futbolcu && card instanceof Futbolcu) ||
                     (playerCard instanceof Basketbolcu && card instanceof Basketbolcu)) {
                 availableCards.add(card);
+
             }
         }
 
         if (!availableCards.isEmpty()) {
             // Rastgele bir kart seç
             Sporcu computerCard = availableCards.get(new Random().nextInt(availableCards.size()));
+
+
             bilgisayar.getKartListesi().remove(computerCard);
-//            computerCard.setImagePath();// Seçilen kartı listeden çıkar
+
+
 
             // Bilgisayarın seçilen karta karşılık gelen butonunu bul
             JButton selectedButton = null;
             for (JButton b : computerButtons) {
                 if (b.isEnabled() && b.getText().contains(computerCard.getSporcuIsim())) {
                     selectedButton = b;
+
+                    BilgisayarKartGuncelle(computerCard,b);
                     break; // İlk eşleşmeyi bulunca döngüden çık
                 }
             }
@@ -321,63 +418,6 @@ public class Test extends javax.swing.JFrame {
         checkGameOver();
     }
 
-    // Yeni değişken ekliyoruz.
-//    private boolean futbolcuSırasıMı = true;
-//
-//    private void OyuncuKartSeç(JButton button, Sporcu card) {
-//        if (!OyuncuSırasıMı) return;
-//
-//        // Seçilen kartın türünü kontrol et
-//        boolean kartFutbolcuMu = card instanceof Futbolcu;
-//        if (kartFutbolcuMu != futbolcuSırasıMı) {
-//            JOptionPane.showMessageDialog(this, "Sıradaki kart türü uygun değil!", "Hata", JOptionPane.WARNING_MESSAGE);
-//            return;
-//        }
-//
-//        playerSelectedCard.setIcon(button.getIcon());
-//        button.setEnabled(false);
-//        kullanıcı.getKartListesi().remove(card);
-//
-//        // Sıradaki kartın türünü değiştir
-//        futbolcuSırasıMı = !futbolcuSırasıMı;
-//
-//        computerTurn(card);
-//    }
-//
-//    private void computerTurn(Sporcu playerCard) {
-//        // Bilgisayarın da uygun sıraya göre seçim yapmasını sağlıyoruz
-//        List<Sporcu> uygunKartlar = bilgisayar.getKartListesi().stream()
-//                .filter(kart -> (kart instanceof Futbolcu) == futbolcuSırasıMı)
-//                .collect(Collectors.toList());
-//
-//        if (!uygunKartlar.isEmpty()) {
-//            Sporcu bilgisayarKartı = uygunKartlar.get(new Random().nextInt(uygunKartlar.size()));
-//            bilgisayar.getKartListesi().remove(bilgisayarKartı);
-//
-//            JButton secilenButon = null;
-//            for (JButton b : computerButtons) {
-//                if (b.isEnabled() && b.getText().contains(bilgisayarKartı.getSporcuIsim())) {
-//                    secilenButon = b;
-//                    break;
-//                }
-//            }
-//
-//            if (secilenButon != null) {
-//                computerSelectedCard.setIcon(secilenButon.getIcon());
-//                secilenButon.setEnabled(false);
-//                kartlarıKarşılaştır(playerCard, bilgisayarKartı);
-//            }
-//        }
-//
-//        OyuncuSırasıMı = true;
-//        checkGameOver();
-//    }
-//-> getname ile getimagePath eşitse bilgisayar kartı açıldıktan sorna çeşitli algoritmayla setimagePath ile yapıştır;
-//    if (kartKarsilastirildi) {
-//        bilgisayarKartLabel.setIcon(new ImageIcon("bilgisayar.jpg")); // Gerçek kart görseli
-//    } else {
-//        bilgisayarKartLabel.setIcon(new ImageIcon("black.jpg")); // Kapalı kart
-//    }
 
 
 
@@ -400,7 +440,7 @@ public class Test extends javax.swing.JFrame {
                     System.out.println("Oyuncunun Kartı : " +OyuncuFutbolKart);
                     System.out.println("Bilgisayarın  Kartı : " +BilgisayarFutbolcuKart);
                     System.out.println("---------------------------------------------");
-                    System.out.println("Seçilen Özellik (Penaltı) : " +seçilenÖzellik);
+                    System.out.println("Seçilen Özellik [Penaltı] : " +seçilenÖzellik);
 
 
                 }
@@ -411,18 +451,19 @@ public class Test extends javax.swing.JFrame {
                     System.out.println("Oyuncunun Kartı : " +OyuncuFutbolKart);
                     System.out.println("Bilgisayarın  Kartı : " +BilgisayarFutbolcuKart);
                     System.out.println("---------------------------------------------");
-                    System.out.println("Seçilen Özellik (Serbest Atış) : " +seçilenÖzellik);
+                    System.out.println("Seçilen Özellik [Serbest Atış] : " +seçilenÖzellik);
+
 
 
                 }
-                case 2 -> { // Burada yanlışlıkla 3 yazılmış, 2 olmalı
+                case 2 -> {
                     oyuncuPuan = OyuncuFutbolKart.getKaleciKarsiKarsiya();
                     bilgisayarPuan = BilgisayarFutbolcuKart.getKaleciKarsiKarsiya();
                     seçilenÖzellik = "3";
                     System.out.println("Oyuncunun Kartı : " +OyuncuFutbolKart);
                     System.out.println("Bilgisayarın  Kartı : " +BilgisayarFutbolcuKart);
                     System.out.println("---------------------------------------------");
-                    System.out.println("Seçilen Özellik (KaleciKarşıKarşıya) : " +seçilenÖzellik);
+                    System.out.println("Seçilen Özellik [KaleciKarşıKarşıya] : " +seçilenÖzellik);
 
                 }
             }
@@ -440,7 +481,7 @@ public class Test extends javax.swing.JFrame {
                     System.out.println("Oyuncunun Kartı : " +OyuncuBasketbolcu);
                     System.out.println("Bilgisayarın  Kartı : " +BilgisayarBasketbolcu);
                     System.out.println("---------------------------------------------");
-                    System.out.println("Seçilen Özellik (İkilik) : " +seçilenÖzellik);
+                    System.out.println("Seçilen Özellik [İkilik] : " +seçilenÖzellik);
 
 
                 }
@@ -451,7 +492,7 @@ public class Test extends javax.swing.JFrame {
                     System.out.println("Oyuncunun Kartı : " +OyuncuBasketbolcu);
                     System.out.println("Bilgisayarın  Kartı : " +BilgisayarBasketbolcu);
                     System.out.println("---------------------------------------------");
-                    System.out.println("Seçilen Özellik (Üçlük) : " +seçilenÖzellik);
+                    System.out.println("Seçilen Özellik [Üçlük] : " +seçilenÖzellik);
 
                 }
                 case 2 -> {
@@ -461,12 +502,26 @@ public class Test extends javax.swing.JFrame {
                     System.out.println("Oyuncunun Kartı : " +OyuncuBasketbolcu);
                     System.out.println("Bilgisayarın  Kartı : " +BilgisayarBasketbolcu);
                     System.out.println("---------------------------------------------");
-                    System.out.println("Seçilen Özellik (Serbest Atış) : " +seçilenÖzellik);
+                    System.out.println("Seçilen Özellik [Serbest Atış] : " +seçilenÖzellik);
 
                 }
             }
         }
 
+        lblAciklama.setText("Seçilen Özellik : " +seçilenÖzellik);//-> dinamik bir şekilde seçilenözellik ögesini label a yazdırdık:
+        if(oyuncuKart instanceof  Futbolcu &&bilgisayarKart instanceof Futbolcu){
+            switch (seçilenÖzellik){
+                case "1" -> lblAciklama.setText("Seçilen Özellik [Penaltı] :" +seçilenÖzellik);
+                case "2" ->lblAciklama.setText("Seçilen Özellik [Serbest Atış] :" +seçilenÖzellik);
+                case "3" ->lblAciklama.setText("Seçilen Özellik [Kaleci Karşı] :" +seçilenÖzellik);
+            }
+        } else if (oyuncuKart instanceof Basketbolcu && bilgisayarKart instanceof Basketbolcu ) {
+            switch (seçilenÖzellik){
+                case "1" -> lblAciklama.setText("Seçilen Özellik [İkilik] :" +seçilenÖzellik);
+                case "2" ->lblAciklama.setText("Seçilen Özellik [Üçlük] :" +seçilenÖzellik);
+                case "3" ->lblAciklama.setText("Seçilen Özellik [Serbest Atış] :" +seçilenÖzellik);
+            }
+        }
 
 
         // Skor hesaplama
