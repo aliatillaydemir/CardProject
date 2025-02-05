@@ -8,8 +8,8 @@ public class Futbolcu extends Sporcu {
 
 
     //parametreli constructer;
-    public Futbolcu(String futbolcuAdi, String futbolcuTakim,int penaltı,int serbestAtis,int kaleciKarsiKarsiya) {
-        super(futbolcuAdi,futbolcuTakim);
+    public Futbolcu(String futbolcuAdi, String futbolcuTakim,int penaltı,int serbestAtis,int kaleciKarsiKarsiya, String imagePath) {
+        super(futbolcuAdi,futbolcuTakim,imagePath);
         this.penaltı=penaltı;
         this.serbestAtis=serbestAtis;
         this.kaleciKarsiKarsiya=kaleciKarsiKarsiya;
@@ -17,7 +17,7 @@ public class Futbolcu extends Sporcu {
     }
     //parametresiz constructer;
     public Futbolcu(){
-        super("","");
+        super("","","");
         this.penaltı=0;
         this.serbestAtis=0;
         this.kaleciKarsiKarsiya=0;
@@ -87,8 +87,12 @@ public class Futbolcu extends Sporcu {
     }
 
 
-
-
+    public String getImagePath() {
+        return super.getImagePath();
+    }
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 }
 
 

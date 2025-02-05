@@ -38,11 +38,11 @@ public class Test extends javax.swing.JFrame {
     private String[] BasketbolcuResimleri = {
             "images/LeBron James.jpg",
             "images/Stephen Curry.jpg",
-            "images/ShaquilleONeal.jpg", // Düzeltildi
+            "images/Shaquille.jpg", // Düzeltildi
             "images/Michael Jordan.jpg",
             "images/Kobe Bryant.jpg",
             "images/James Harden.jpg",
-            "images/Giannis Antetokounmpo.jpg",
+            "images/Antetokounmpo.jpg",
             "images/Kevin Durant.jpg"
     };
 
@@ -58,24 +58,24 @@ public class Test extends javax.swing.JFrame {
     //kartları oluşturma ve dağıtma işlemi;
     public void kartlarıOluştur() {
         List<Sporcu> futbolcular = new ArrayList<>();
-        futbolcular.add(new Futbolcu("Ronaldo", "Manchester United", 95, 90, 92));
-        futbolcular.add(new Futbolcu("Messi", "PSG", 90, 95, 94));
-        futbolcular.add(new Futbolcu("Neymar", "PSG", 88, 89, 90));
-        futbolcular.add(new Futbolcu("Mbappe", "PSG", 87, 85, 93));
-        futbolcular.add(new Futbolcu("Lewandowski", "Dortmund", 95, 100, 87));
-        futbolcular.add(new Futbolcu("De Bruyne", "Man City", 82, 90, 85));
-        futbolcular.add(new Futbolcu("Salah", "Liverpool", 80, 95, 90));
-        futbolcular.add(new Futbolcu("Dijk", "Liverpool", 87, 87, 87));
+        futbolcular.add(new Futbolcu("Ronaldo", "Manchester United", 95, 90, 92, FutbolcuResimleri[0]));
+        futbolcular.add(new Futbolcu("Lionel Messi", "PSG", 90, 95, 94, FutbolcuResimleri[5]));
+        futbolcular.add(new Futbolcu("Neymar", "PSG", 88, 89, 90, FutbolcuResimleri[2]));
+        futbolcular.add(new Futbolcu("Kylian Mbappe", "PSG", 87, 85, 93, FutbolcuResimleri[3]));
+        futbolcular.add(new Futbolcu("Robert Lewandowski", "Dortmund", 95, 100, 87, FutbolcuResimleri[7]));
+        futbolcular.add(new Futbolcu("Kevin De Bruyne", "Man City", 82, 90, 85, FutbolcuResimleri[1]));
+        futbolcular.add(new Futbolcu("Mohamed Salah", "Liverpool", 80, 95, 90, FutbolcuResimleri[6]));
+        futbolcular.add(new Futbolcu("Virgil van Dijk", "Liverpool", 87, 87, 87, FutbolcuResimleri[4]));
 
         List<Sporcu> basketbolcular = new ArrayList<>();
-        basketbolcular.add(new Basketbolcu(90, 85, 88, "LeBron James", "Lakers"));
-        basketbolcular.add(new Basketbolcu(88, 90, 85, "Curry", "Warriors"));
-        basketbolcular.add(new Basketbolcu(87, 86, 89, "Durant", "Nets"));
-        basketbolcular.add(new Basketbolcu(85, 87, 86, "Giannis", "Bucks"));
-        basketbolcular.add(new Basketbolcu(80, 84, 98, "James Harden", "76ers"));
-        basketbolcular.add(new Basketbolcu(78, 90, 95, "Kobe Bryant", "Lakers"));
-        basketbolcular.add(new Basketbolcu(97, 88, 79, "Michael Jordan", "Bulls"));
-        basketbolcular.add(new Basketbolcu(95, 82, 80, "Shaquille O'Neal", "Lakers"));
+        basketbolcular.add(new Basketbolcu(90, 85, 88, "LeBron James", "Lakers", BasketbolcuResimleri[0]));
+        basketbolcular.add(new Basketbolcu(88, 90, 85, "Stephen Curry", "Warriors", BasketbolcuResimleri[1]));
+        basketbolcular.add(new Basketbolcu(87, 86, 89, "Kevin Durant", "Nets", BasketbolcuResimleri[7]));
+        basketbolcular.add(new Basketbolcu(85, 87, 86, " Antetokounmpo", "Bucks", BasketbolcuResimleri[6]));
+        basketbolcular.add(new Basketbolcu(80, 84, 98, "James Harden", "76ers", BasketbolcuResimleri[5]));
+        basketbolcular.add(new Basketbolcu(78, 90, 95, "Kobe Bryant", "Lakers", BasketbolcuResimleri[4]));
+        basketbolcular.add(new Basketbolcu(97, 88, 79, "Michael Jordan", "Bulls", BasketbolcuResimleri[3]));
+        basketbolcular.add(new Basketbolcu(95, 82, 80, "Shaquille ", "Lakers", BasketbolcuResimleri[2]));
 
 
         Collections.shuffle(futbolcular);
@@ -86,12 +86,17 @@ public class Test extends javax.swing.JFrame {
             kullanıcı.getKartListesi().add(basketbolcular.get(i));
             bilgisayar.getKartListesi().add(futbolcular.get(i + 4));
             bilgisayar.getKartListesi().add(basketbolcular.get(i + 4));
+
+        }
+        for (Sporcu kart : bilgisayar.getKartListesi()) {
+            kart.setImagePath("images/black.jpg");
         }
 
 
     }
 
     public void oyunBaslat() {
+        System.out.println("Kartlar Kullanıcıya ve Bilgisayara 8 er adet olmak üzere dağıtıldı!");
         setTitle("Kart Oyunu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 800);
@@ -179,8 +184,12 @@ public class Test extends javax.swing.JFrame {
         JPanel computerPanel = KartPaneliOluştur("Bilgisayar Kartları", bilgisayar.getKartListesi(), true);
         gamePanel.add(computerPanel);
 
+
         middlePanel = new JPanel(new GridLayout(1, 2, 20, 0));
         middlePanel.setBorder(BorderFactory.createTitledBorder("Seçilen Kartlar"));
+        JLabel lblAciklama = new JLabel("Kullanıcın seçtiği Kart:\n");
+        lblAciklama.setFont(new Font("Arial", Font.PLAIN, 20)); // Küçük font boyutu
+        middlePanel.add(lblAciklama);
 
         playerSelectedCard = new JLabel();
         computerSelectedCard = new JLabel();
@@ -219,31 +228,42 @@ public class Test extends javax.swing.JFrame {
         return panel;
     }
 
+
+    private void BilgisayarKartAç(JButton button, Sporcu card) {
+        ImageIcon yeniIcon = new ImageIcon(resizeImage(card.getImagePath()));
+        button.setIcon(yeniIcon); // Gerçek resmi göster
+        button.setText("<html><b>" + card.getSporcuIsim() + "</b> - " + card.getSporcuTakim() + "</html>");
+    }
+
+
     private JButton KartButonuOluştur(Sporcu card, boolean isComputer) {
-        JButton button = new JButton(); //-> butonu oluşturduk
+        JButton button = new JButton(); // Butonu oluşturduk
         Image resizedImage = resizeImage(card.getImagePath());
+
+        StringBuilder cardText = new StringBuilder(card.getSporcuIsim() + " - " + card.getSporcuTakim());
+
+        if (card instanceof Futbolcu) {
+            Futbolcu futbolcu = (Futbolcu) card;
+            cardText.append("<br><br>1: ").append(futbolcu.getPenaltı())
+                    .append(",<br>2: ").append(futbolcu.getSerbestAtis())
+                    .append(",<br>3: ").append(futbolcu.getKaleciKarsiKarsiya());
+
+        } else if (card instanceof Basketbolcu) {
+            Basketbolcu basketbolcu = (Basketbolcu) card;
+            cardText.append("<br><br>1: ").append(basketbolcu.getIkilik())
+                    .append(",<br>2: ").append(basketbolcu.getUcluk())
+                    .append(",<br>3: ").append(basketbolcu.getSerbestAtis());
+        }
+
+        button.setText("<html>" + cardText.toString() + "</html>");
 
         if (resizedImage != null) {
             button.setIcon(new ImageIcon(resizedImage));
-        } else {
-            StringBuilder cardText = new StringBuilder(card.getSporcuIsim() + " - " + card.getSporcuTakim());
-
-            if (card instanceof Futbolcu) {
-                Futbolcu futbolcu = (Futbolcu) card;
-                cardText.append("<br><br>1: ").append(futbolcu.getPenaltı())
-                        .append(",<br>2: ").append(futbolcu.getSerbestAtis())
-                        .append(",<br>3: ").append(futbolcu.getKaleciKarsiKarsiya());
-            } else if (card instanceof Basketbolcu) {
-                Basketbolcu basketbolcu = (Basketbolcu) card;
-                cardText.append("<br><br>1: ").append(basketbolcu.getIkilik())
-                        .append(",<br>2: ").append(basketbolcu.getUcluk())
-                        .append(",<br>3: ").append(basketbolcu.getSerbestAtis());
-            }
-
-            button.setText("<html>" + cardText.toString() + "</html>"); //->set etmeyi bir sor
+            button.setHorizontalTextPosition(SwingConstants.CENTER); // Yazıyı merkeze al
+            button.setVerticalTextPosition(SwingConstants.BOTTOM); // Yazıyı alta al
         }
 
-        button.setPreferredSize(new Dimension(100, 150));
+        button.setPreferredSize(new Dimension(100, 200));
 
         if (!isComputer) {
             button.addActionListener(e -> OyuncuKartSeç(button, card));
@@ -278,7 +298,8 @@ public class Test extends javax.swing.JFrame {
         if (!availableCards.isEmpty()) {
             // Rastgele bir kart seç
             Sporcu computerCard = availableCards.get(new Random().nextInt(availableCards.size()));
-            bilgisayar.getKartListesi().remove(computerCard); // Seçilen kartı listeden çıkar
+            bilgisayar.getKartListesi().remove(computerCard);
+//            computerCard.setImagePath();// Seçilen kartı listeden çıkar
 
             // Bilgisayarın seçilen karta karşılık gelen butonunu bul
             JButton selectedButton = null;
@@ -351,6 +372,13 @@ public class Test extends javax.swing.JFrame {
 //        OyuncuSırasıMı = true;
 //        checkGameOver();
 //    }
+//-> getname ile getimagePath eşitse bilgisayar kartı açıldıktan sorna çeşitli algoritmayla setimagePath ile yapıştır;
+//    if (kartKarsilastirildi) {
+//        bilgisayarKartLabel.setIcon(new ImageIcon("bilgisayar.jpg")); // Gerçek kart görseli
+//    } else {
+//        bilgisayarKartLabel.setIcon(new ImageIcon("black.jpg")); // Kapalı kart
+//    }
+
 
 
     //(buradaki oyuncu->kullanıcı oluyor);
@@ -414,6 +442,7 @@ public class Test extends javax.swing.JFrame {
                     System.out.println("---------------------------------------------");
                     System.out.println("Seçilen Özellik (İkilik) : " +seçilenÖzellik);
 
+
                 }
                 case 1 -> {
                     oyuncuPuan = OyuncuBasketbolcu.getUcluk();
@@ -438,6 +467,8 @@ public class Test extends javax.swing.JFrame {
             }
         }
 
+
+
         // Skor hesaplama
         if (oyuncuPuan > bilgisayarPuan) {
             kullanıcı.setSkor(kullanıcı.getSkor() + 10);
@@ -455,7 +486,13 @@ public class Test extends javax.swing.JFrame {
 
     private Image resizeImage(String imagePath) {
         try {
-            URL imageUrl = getClass().getResource("/" + imagePath);
+            if (imagePath == null || imagePath.isEmpty()) {
+                System.err.println("Image path is empty or null!");
+                return null;
+            }
+
+            URL imageUrl = getClass().getResource(imagePath);
+
             if (imageUrl == null) {
                 System.err.println("Cannot find image: " + imagePath);
                 return null;
@@ -483,10 +520,15 @@ public class Test extends javax.swing.JFrame {
             String kazanan;
             if (kullanıcı.getSkor() > bilgisayar.getSkor()) {
                 kazanan = "Kullanıcı";
+                System.out.println("Kazanan : " +kazanan);
+                System.out.println("Kazanan : " +kazanan+"\nKullanıcı Puan: "+ kullanıcı.getSkor()+ "\nBilgisayar Puan : " +bilgisayar.getSkor() );;
             } else if (kullanıcı.getSkor() < bilgisayar.getSkor()) {
                 kazanan = "Bilgisayar";
+                System.out.println("Kazanan : " +kazanan+"\nKullanıcı Puan: "+ kullanıcı.getSkor()+ "\nBilgisayar Puan : " +bilgisayar.getSkor() );
             } else {
                 kazanan = "Berabere";
+                System.out.println("Tur  : " +kazanan);
+                System.out.println("Kazanan : " +kazanan+"\nKullanıcı Puan: "+ kullanıcı.getSkor()+ "\nBilgisayar Puan : " +bilgisayar.getSkor() );
             }
 
             JOptionPane.showMessageDialog(this,

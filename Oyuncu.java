@@ -31,7 +31,6 @@ public abstract class  Oyuncu {
 
     //oyuncunun skorunu göstermek:
     public void SkorGoster(){
-
         System.out.println((getOyuncuAdi() + " Skoru: " + getSkor()));
     }
 
@@ -53,7 +52,6 @@ public abstract class  Oyuncu {
 
     //fonksiyon arraylist döndürüyor ve arraylist içersinde sporcu objesini depoluyor!---> önemli
     public ArrayList<Sporcu> getKartListesi() {
-
         return this.kartListesi;
     }
 
