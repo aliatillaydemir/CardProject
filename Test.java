@@ -104,7 +104,7 @@ public class Test extends javax.swing.JFrame {
     //başlangıçta bilgisayar kartları yazılar gizlidir;
     private void BilgisayarKartlariniGizle(List<JButton> computerButtons) {
         for (JButton button : computerButtons) {
-            button.setText(""); // Buton metnini gizle
+            button.setText("");
         }
     }
 
@@ -200,6 +200,8 @@ public class Test extends javax.swing.JFrame {
 
 
         middlePanel = new JPanel(new GridLayout(1, 2, 20, 0));
+        middlePanel.setBackground(Color.LIGHT_GRAY); // Arka plan rengini gri yapar
+
         middlePanel.setBorder(BorderFactory.createTitledBorder("Seçilen Kartlar"));
         lblAciklama =new JLabel("Seçilen Özellik :");
         lblAciklama.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -208,11 +210,22 @@ public class Test extends javax.swing.JFrame {
 
         playerSelectedCard = new JLabel();
         computerSelectedCard = new JLabel();
+        playerSelectedCard.setOpaque(true);
+        playerSelectedCard.setBackground(Color.LIGHT_GRAY);
         playerSelectedCard.setPreferredSize(new Dimension(100, 150));
-        computerSelectedCard.setPreferredSize(new Dimension(100, 150));
+        computerSelectedCard.setOpaque(true);
+        computerSelectedCard.setBackground(Color.LIGHT_GRAY);
 
-        middlePanel.add(playerSelectedCard);
+
+
+        //-> kullanıcının seçtiği kartları middlePanel e ekledik
+        computerSelectedCard.setPreferredSize(new Dimension(100, 150));//-> bilgisayarın seçtiği kartları middlePanel e ekledik
+
+       middlePanel.add(playerSelectedCard);
         middlePanel.add(computerSelectedCard);
+
+
+        //------------------middle panel -----------------------------------------
         gamePanel.add(middlePanel);
 
         JPanel playerPanel = KartPaneliOluştur("Kullanıcı Kartları", kullanıcı.getKartListesi(), false);
@@ -252,11 +265,6 @@ public class Test extends javax.swing.JFrame {
     }
 
 
-
-
-
-
-
     //kartlar açıldığında--->>>> pc nin kartları güncellenir ve kartların değerleri açılıp orta panale atılınca gösterilir;
     private void BilgisayarKartGuncelle(Sporcu secilenKart, JButton computerButton) {
         String resimYolu = "";
@@ -275,13 +283,10 @@ public class Test extends javax.swing.JFrame {
                 }
             }
         }
-
         if (resimYolu != null) {
             secilenKart.setImagePath(resimYolu);//->set ettik
-
             // Resmi boyutlandırma işlemi
             Image resizedImage = resizeImage(resimYolu);
-
             if (resizedImage != null) {
                 // Yeniden boyutlandırılmış resmi ImageIcon olarak set et
                 computerButton.setIcon(new ImageIcon(resizedImage));
@@ -319,37 +324,44 @@ public class Test extends javax.swing.JFrame {
         JButton button = new JButton(); // Butonu oluşturduk
         Image resizedImage = resizeImage(card.getImagePath());
 
-        // HTML formatında yazı oluşturuyoruz (Üst üste gelecek şekilde)
-        StringBuilder cardText = new StringBuilder("<html><center>");
-        cardText.append(card.getSporcuIsim()).append("<br>");
-//        cardText.append(card.getSporcuTakim()).append("<br><br>");
 
-        if (card instanceof Futbolcu) {
-            Futbolcu futbolcu = (Futbolcu) card;
-            cardText.append(futbolcu.getPenaltı()).append("<br>"); // Penaltı değeri
-            cardText.append(futbolcu.getSerbestAtis()).append("<br>"); // Serbest atış değeri
-            cardText.append(futbolcu.getKaleciKarsiKarsiya()); // Kaleci karşı karşıya değeri
-        } else if (card instanceof Basketbolcu) {
-            Basketbolcu basketbolcu = (Basketbolcu) card;
-            cardText.append(basketbolcu.getIkilik()).append("<br>"); // İkilik değeri
-            cardText.append(basketbolcu.getUcluk()).append("<br>"); // Üçlük değeri
-            cardText.append(basketbolcu.getSerbestAtis()); // Serbest atış değeri
-        }
 
-        cardText.append("</center></html>"); // HTML kapanışı
-        button.setText(cardText.toString()); // HTML formatlı metni butona ekliyoruz
+            StringBuilder cardText = new StringBuilder("<html><center>");
+            cardText.append(card.getSporcuIsim()).append("<br>");
+
+            //eksik olan kısım !iscomputer diiynce algoritma çalışması lazım ama çalışmıyor bunu sor!
+        //İF !İSCOMPUTER
+
+
+            if (card instanceof Futbolcu) {
+                Futbolcu futbolcu = (Futbolcu) card;
+                cardText.append(futbolcu.getPenaltı()).append("<br>");
+                cardText.append(futbolcu.getSerbestAtis()).append("<br>");
+                cardText.append(futbolcu.getKaleciKarsiKarsiya());
+            } else if (card instanceof Basketbolcu) {
+                Basketbolcu basketbolcu = (Basketbolcu) card;
+                cardText.append(basketbolcu.getIkilik()).append("<br>");
+                cardText.append(basketbolcu.getUcluk()).append("<br>");
+                cardText.append(basketbolcu.getSerbestAtis());
+            }
+
+            cardText.append("</center></html>");
+            button.setText(cardText.toString());
+            button.setHorizontalTextPosition(SwingConstants.CENTER);
+            button.setVerticalTextPosition(SwingConstants.CENTER);
+            button.setFont(new Font("Arial", Font.PLAIN, 20));
+
 
         // Resmi arka plan olarak ayarlıyoruz
         if (resizedImage != null) {
-            button.setIcon(new ImageIcon(resizedImage)); // Görseli butona yerleştiriyoruz
-            button.setHorizontalTextPosition(SwingConstants.CENTER); // Yazıyı yatayda ortala
-            button.setVerticalTextPosition(SwingConstants.CENTER); // Yazıyı dikeyde ortala
+            button.setIcon(new ImageIcon(resizedImage));
+
         }
 
-        button.setPreferredSize(new Dimension(100, 150)); // Buton boyutu ayarlıyoruz
-        button.setFont(new Font("Arial", Font.PLAIN, 20));
+        button.setPreferredSize(new Dimension(100, 150));
+
         button.setContentAreaFilled(false); // İçeriğin alanı doldurulmasın (resmi göstermek için)
-        button.setOpaque(true); // Şeffaflık ayarını kapatıyoruz
+        button.setOpaque(true);
         button.setForeground(Color.WHITE);
         if (!isComputer) {
             button.addActionListener(e -> OyuncuKartSeç(button, card));
@@ -363,13 +375,16 @@ public class Test extends javax.swing.JFrame {
         if (!OyuncuSırasıMı) return;
 
         playerSelectedCard.setIcon(button.getIcon());
-        button.setEnabled(false);
+
+
+
 
         // Remove the card from the player's list
         kullanıcı.getKartListesi().remove(card);
-
+        button.setEnabled(false);
         computerTurn(card);
     }
+
 
 
 
@@ -417,6 +432,7 @@ public class Test extends javax.swing.JFrame {
         OyuncuSırasıMı = true;
         checkGameOver();
     }
+
 
 
 
@@ -539,6 +555,7 @@ public class Test extends javax.swing.JFrame {
     }
 
 
+
     private Image resizeImage(String imagePath) {
         try {
             if (imagePath == null || imagePath.isEmpty()) {
@@ -584,6 +601,7 @@ public class Test extends javax.swing.JFrame {
                 kazanan = "Berabere";
                 System.out.println("Tur  : " +kazanan);
                 System.out.println("Kazanan : " +kazanan+"\nKullanıcı Puan: "+ kullanıcı.getSkor()+ "\nBilgisayar Puan : " +bilgisayar.getSkor() );
+
             }
 
             JOptionPane.showMessageDialog(this,
