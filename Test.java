@@ -170,7 +170,7 @@ public class Test extends javax.swing.JFrame {
         skorGüncelle();
         kartlarıOluştur();
         oyunKur();
-        BilgisayarKartlariniGizle(computerButtons);
+//        BilgisayarKartlariniGizle(computerButtons);
 
     }
 
