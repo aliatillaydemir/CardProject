@@ -6,8 +6,8 @@ public  class  Basketbolcu extends  Sporcu {
 
 
     //parametreli constructer;
-    public Basketbolcu(int ikilik, int ucluk, int serbestAtis, String basketbolcuAdi, String basketbolcuTakim,String imagePath) {
-        super(basketbolcuAdi, basketbolcuTakim,imagePath);
+    public Basketbolcu(int ikilik, int ucluk, int serbestAtis, String basketbolcuAdi, String basketbolcuTakim, String imagePath) {
+        super(basketbolcuAdi, basketbolcuTakim, imagePath);
         this.ikilik = ikilik;
         this.ucluk = ucluk;
         this.serbestAtis = serbestAtis;
@@ -17,7 +17,7 @@ public  class  Basketbolcu extends  Sporcu {
 
     //parametresiz constructer
     public Basketbolcu() {
-        super("", "","");
+        super("", "", "");
         this.ikilik = 0;
         this.ucluk = 0;
         this.serbestAtis = 0;
@@ -79,14 +79,14 @@ public  class  Basketbolcu extends  Sporcu {
     public int getSerbestAtis() {
         return serbestAtis;
     }
+
     public String getImagePath() {
         return super.getImagePath();
     }
+
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+
+
     }
-
 }
-//}
-
-

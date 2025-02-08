@@ -1,34 +1,33 @@
 public class Futbolcu extends Sporcu {
     private int penaltı;
-    private  int serbestAtis;
+    private int serbestAtis;
     private int kaleciKarsiKarsiya;
     private boolean kartKullanildiMi;
 
 
-
-
     //parametreli constructer;
-    public Futbolcu(String futbolcuAdi, String futbolcuTakim,int penaltı,int serbestAtis,int kaleciKarsiKarsiya, String imagePath) {
-        super(futbolcuAdi,futbolcuTakim,imagePath);
-        this.penaltı=penaltı;
-        this.serbestAtis=serbestAtis;
-        this.kaleciKarsiKarsiya=kaleciKarsiKarsiya;
-        this.kartKullanildiMi=false;
+    public Futbolcu(String futbolcuAdi, String futbolcuTakim, int penaltı, int serbestAtis, int kaleciKarsiKarsiya, String imagePath) {
+        super(futbolcuAdi, futbolcuTakim, imagePath);
+        this.penaltı = penaltı;
+        this.serbestAtis = serbestAtis;
+        this.kaleciKarsiKarsiya = kaleciKarsiKarsiya;
+        this.kartKullanildiMi = false;
     }
+
     //parametresiz constructer;
-    public Futbolcu(){
-        super("","","");
-        this.penaltı=0;
-        this.serbestAtis=0;
-        this.kaleciKarsiKarsiya=0;
-        this.kartKullanildiMi=false;
+    public Futbolcu() {
+        super("", "", "");
+        this.penaltı = 0;
+        this.serbestAtis = 0;
+        this.kaleciKarsiKarsiya = 0;
+        this.kartKullanildiMi = false;
 
     }
 
     @Override
     public void sporcuPuaniGoster() {
-    int toplam=serbestAtis+kaleciKarsiKarsiya+penaltı;
-        System.out.println(getSporcuTakim() +"penaltı "+penaltı +"serbestAtis "+serbestAtis +"kaleciKarsiKarsiya "+kaleciKarsiKarsiya +" atarak toplam :" +toplam + "puan topladı." );
+        int toplam = serbestAtis + kaleciKarsiKarsiya + penaltı;
+        System.out.println(getSporcuTakim() + "penaltı " + penaltı + "serbestAtis " + serbestAtis + "kaleciKarsiKarsiya " + kaleciKarsiKarsiya + " atarak toplam :" + toplam + "puan topladı.");
     }
 
 
@@ -90,10 +89,10 @@ public class Futbolcu extends Sporcu {
     public String getImagePath() {
         return super.getImagePath();
     }
+
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+
     }
+
 }
-
-
-

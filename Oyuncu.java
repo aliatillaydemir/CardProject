@@ -6,9 +6,8 @@ import java.util.ArrayList;
 public abstract class  Oyuncu {
     private String oyuncuID;
     private String oyuncuAdi;
-    private  int Skor;
+    private int Skor;
     private ArrayList<Sporcu> kartListesi; //-> arraylistimiz var sporcu objesi depoluyor ismi de kartlistesi;
-
 
 
     //parametreli constructer
@@ -20,17 +19,18 @@ public abstract class  Oyuncu {
 
 
     }
+
     //parametresiz constructer
-    public  Oyuncu(){
-        this.oyuncuID="";
-        this.oyuncuAdi="";
-        this.Skor=0;
+    public Oyuncu() {
+        this.oyuncuID = "";
+        this.oyuncuAdi = "";
+        this.Skor = 0;
         this.kartListesi = new ArrayList<>();
     }
 
 
     //oyuncunun skorunu göstermek:
-    public void SkorGoster(){
+    public void SkorGoster() {
         System.out.println((getOyuncuAdi() + " Skoru: " + getSkor()));
     }
 
@@ -39,13 +39,12 @@ public abstract class  Oyuncu {
     public abstract Sporcu kartSec();
 
 
-
-
     //Getter-Setter
 
     public String getOyuncuID() {
         return oyuncuID;
     }
+
     public void setOyuncuID(String oyuncuID) {
         this.oyuncuID = oyuncuID;
     }
@@ -56,10 +55,10 @@ public abstract class  Oyuncu {
     }
 
 
-
     public int getSkor() {
         return Skor;
     }
+
     public void setSkor(int Skor) {
         this.Skor = Skor;
     }
@@ -67,8 +66,9 @@ public abstract class  Oyuncu {
     public String getOyuncuAdi() {
         return oyuncuAdi;
     }
+
     public void setOyuncuAdi(String oyuncuAdi) {
         this.oyuncuAdi = oyuncuAdi;
-    }
 
+    }
 }

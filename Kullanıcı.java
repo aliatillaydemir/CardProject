@@ -10,7 +10,7 @@ import java.util.logging.*;
 public class Kullanıcı extends  Oyuncu {
 
     public Kullanıcı(String oyuncuID, String oyuncuAdi, int Skor) {
-        super(oyuncuID,oyuncuAdi,Skor);
+        super(oyuncuID, oyuncuAdi, Skor);
     }
 
     private final static Logger LOGGER =
@@ -25,12 +25,12 @@ public class Kullanıcı extends  Oyuncu {
     //kullanıcı kart seçme olayı..
     @Override
     public Sporcu kartSec() {
-        Scanner scanner=new Scanner(System.in);
-        int index=scanner.nextInt();//kullancı kendi istediği kartı seçsin diye;
+        Scanner scanner = new Scanner(System.in);
+        int index = scanner.nextInt();//kullancı kendi istediği kartı seçsin diye;
         //seçilen kart , (index bazı ) kartlistesinden çıkarıldı!
 
         LOGGER.log(Level.INFO, String.valueOf(index));
-        return    getKartListesi().remove(index);
+        return getKartListesi().remove(index);
 
     }
 
@@ -47,7 +47,6 @@ public class Kullanıcı extends  Oyuncu {
     }
 
 
-
     @Override
     public String getOyuncuID() {
         return super.getOyuncuID();
@@ -59,7 +58,6 @@ public class Kullanıcı extends  Oyuncu {
     }
 
 
-
     @Override
     public void setSkor(int Skor) {
         super.setSkor(Skor);
@@ -68,6 +66,7 @@ public class Kullanıcı extends  Oyuncu {
     @Override
     public int getSkor() {
         return super.getSkor();
-    }
 
+
+    }
 }

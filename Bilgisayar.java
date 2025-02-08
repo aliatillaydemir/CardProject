@@ -1,14 +1,14 @@
 import java.util.ArrayList;
 import java.util.Random;
-public class Bilgisayar extends  Oyuncu{
+public class Bilgisayar extends  Oyuncu {
 
-    public Bilgisayar(String oyuncuID, String oyuncuAdi, int Skor){
-        super(oyuncuID,oyuncuAdi,Skor);
+    public Bilgisayar(String oyuncuID, String oyuncuAdi, int Skor) {
+        super(oyuncuID, oyuncuAdi, Skor);
     }
 
     // Oyuncu sınıfının parametresiz constructor'ı çağrılıyor
-    public Bilgisayar(){
-  super();
+    public Bilgisayar() {
+        super();
 
 
     }
@@ -19,12 +19,11 @@ public class Bilgisayar extends  Oyuncu{
     public Sporcu kartSec() {
 //        System.out.println("--------------------Bilgiseyar sınıfına özgü kart seçme -------------------------------");
         Random random = new Random();
-        int choosen_index=random.nextInt(getKartListesi().size());
-       return getKartListesi().remove(choosen_index);           //random seçilen kart çıkarıldı...
+        int choosen_index = random.nextInt(getKartListesi().size());
+        return getKartListesi().remove(choosen_index);           //random seçilen kart çıkarıldı...
 
 
     }
-
 
 
     //Getter-Setter
@@ -33,7 +32,6 @@ public class Bilgisayar extends  Oyuncu{
     public int getSkor() {
         return super.getSkor();
     }
-
 
 
     @Override
@@ -45,7 +43,6 @@ public class Bilgisayar extends  Oyuncu{
     public String getOyuncuID() {
         return super.getOyuncuID();
     }
-
 
 
     @Override
@@ -61,8 +58,7 @@ public class Bilgisayar extends  Oyuncu{
     @Override
     public void setSkor(int Skor) {
         super.setSkor(Skor);
+
+
     }
-
-
 }
-

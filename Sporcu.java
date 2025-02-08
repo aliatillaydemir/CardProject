@@ -4,33 +4,33 @@ public  abstract  class Sporcu {
     protected String imagePath;
 
     //parametreli constructer
-public Sporcu(String sporcuIsim, String sporcuTakim, String imagePath) {
-    this.sporcuIsim = sporcuIsim;
-    this.sporcuTakim = sporcuTakim;
-    this.imagePath = imagePath;
-}
-//parametresiz constructer
-public  Sporcu(){
-this.sporcuIsim = null;
-this.sporcuTakim = null;
-}
+    public Sporcu(String sporcuIsim, String sporcuTakim, String imagePath) {
+        this.sporcuIsim = sporcuIsim;
+        this.sporcuTakim = sporcuTakim;
+        this.imagePath = imagePath;
+    }
+    //parametresiz constructer
+    public  Sporcu(){
+        this.sporcuIsim = null;
+        this.sporcuTakim = null;
+    }
 
-abstract void sporcuPuaniGoster();
+    abstract void sporcuPuaniGoster();
 //kart puanını gösterir;
 
 
-//Getter-Setter
+    //Getter-Setter
     public String getSporcuIsim() {
         return sporcuIsim;
     }
     public void setSporcuIsim(String sporcuIsim) {
-    this.sporcuIsim = sporcuIsim;
+        this.sporcuIsim = sporcuIsim;
     }
     public String getSporcuTakim() {
-    return sporcuTakim;
+        return sporcuTakim;
     }
     public void setSporcuTakim(String sporcuTakim) {
-    this.sporcuTakim = sporcuTakim;
+        this.sporcuTakim = sporcuTakim;
     }
 
 
