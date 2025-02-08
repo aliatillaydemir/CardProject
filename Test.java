@@ -494,33 +494,23 @@ public class Test extends javax.swing.JFrame {
             }
         }
 
-        lblAciklama.setText("Seçilen Özellik : " + seçilenÖzellik);//-> dinamik bir şekilde seçilenözellik ögesini label a yazdırdık:
-        if (oyuncuKart instanceof Futbolcu && bilgisayarKart instanceof Futbolcu) {
-            switch (seçilenÖzellik) {
-                case "1" -> lblAciklama.setText("Seçilen Özellik [Penaltı] :" + seçilenÖzellik);
-                case "2" -> lblAciklama.setText("Seçilen Özellik [Serbest Atış] :" + seçilenÖzellik);
-                case "3" -> lblAciklama.setText("Seçilen Özellik [Kaleci Karşı] :" + seçilenÖzellik);
-            }
-        } else if (oyuncuKart instanceof Basketbolcu && bilgisayarKart instanceof Basketbolcu) {
-            switch (seçilenÖzellik) {
-                case "1" -> lblAciklama.setText("Seçilen Özellik [İkilik] :" + seçilenÖzellik);
-                case "2" -> lblAciklama.setText("Seçilen Özellik [Üçlük] :" + seçilenÖzellik);
-                case "3" -> lblAciklama.setText("Seçilen Özellik [Serbest Atış] :" + seçilenÖzellik);
-            }
-        }
+        String sonucMetni = "<html><b>Seçilen Özellik: " + seçilenÖzellik + "</b><br>" +
+                "Kullanıcı: " + oyuncuPuan + " - Bilgisayar: " + bilgisayarPuan;
 
-
-        // Skor hesaplama
+        // Kazananı belirleme
         if (oyuncuPuan > bilgisayarPuan) {
+            sonucMetni += "<br><font color='green'><b> Turu Kullanıcı Kazandı!</b></font>";
             kullanıcı.setSkor(kullanıcı.getSkor() + 10);
-            System.out.println("Turu kazanan : Kullanıcı");
-            System.out.println("---------------------------------------------");
         } else if (oyuncuPuan < bilgisayarPuan) {
+            sonucMetni += "<br><font color='red'><b> Turu Bilgisayar Kazandı!</b></font>";
             bilgisayar.setSkor(bilgisayar.getSkor() + 10);
-            System.out.println("Turu kazanan : Bilgisayar");
-            System.out.println("---------------------------------------------");
+        } else {
+            sonucMetni += "<br><b> Tur Berabere!</b>";
         }
-        lblsecilenOzellik.setText("Seçilen Özellik : " + seçilenÖzellik);
+
+        sonucMetni += "</html>";
+        lblAciklama.setText(sonucMetni);
+        lblAciklama.setHorizontalAlignment(SwingConstants.CENTER);
         skorGüncelle();
     }
 
