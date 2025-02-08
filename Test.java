@@ -495,7 +495,8 @@ public class Test extends javax.swing.JFrame {
         }
 
         String sonucMetni = "<html><b>Seçilen Özellik: " + seçilenÖzellik + "</b><br>" +
-                "Kullanıcı: " + oyuncuPuan + " - Bilgisayar: " + bilgisayarPuan;
+                "Kullanıcı Puan: " + oyuncuPuan + "<br>" +
+                "Bilgisayar Puan: " + bilgisayarPuan;
 
         // Kazananı belirleme
         if (oyuncuPuan > bilgisayarPuan) {
