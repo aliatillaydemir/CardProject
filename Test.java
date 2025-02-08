@@ -170,7 +170,7 @@ public class Test extends javax.swing.JFrame {
         skorGüncelle();
         kartlarıOluştur();
         oyunKur();
-//        BilgisayarKartlariniGizle(computerButtons);
+        BilgisayarKartlariniGizle(computerButtons);
 
     }
 
@@ -249,12 +249,6 @@ public class Test extends javax.swing.JFrame {
         return panel;
     }
 
-
-    private void BilgisayarKartAç(JButton button, Sporcu card) {
-        ImageIcon yeniIcon = new ImageIcon(resizeImage(card.getImagePath()));
-        button.setIcon(yeniIcon); // Gerçek resmi göster
-        button.setText("<html><b>" + card.getSporcuIsim() + "</b> - " + card.getSporcuTakim() + "</html>");
-    }
 
 
     //kartlar açıldığında--->>>> pc nin kartları güncellenir ve kartların değerleri açılıp orta panale atılınca gösterilir;
@@ -363,7 +357,7 @@ public class Test extends javax.swing.JFrame {
         playerSelectedCard.setIcon(button.getIcon());
 
 
-        // Remove the card from the player's list
+
         kullanıcı.getKartListesi().remove(card);
         button.setEnabled(false);
         computerTurn(card);
@@ -398,7 +392,7 @@ public class Test extends javax.swing.JFrame {
                     selectedButton = b;
 
                     BilgisayarKartGuncelle(computerCard, b);
-                    break; // İlk eşleşmeyi bulunca döngüden çık
+                    break;
                 }
             }
 
