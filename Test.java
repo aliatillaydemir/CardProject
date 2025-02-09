@@ -312,7 +312,7 @@ public class Test extends javax.swing.JFrame {
         StringBuilder cardText = new StringBuilder("<html><center>");
         cardText.append(card.getSporcuIsim()).append("<br>");
 
-        //eksik olan kısım !iscomputer diiynce algoritma çalışması lazım ama çalışmıyor bunu sor!
+        //eksik olan kısım !iscomputer diiynce algoritma çalışması lazım ama çalışmıyor!
         //İF !İSCOMPUTER
 
         if (card instanceof Futbolcu) {
@@ -365,8 +365,6 @@ public class Test extends javax.swing.JFrame {
 
 
     private void computerTurn(Sporcu playerCard) {
-        // Uygun kartları elle filtreleyerek bir liste oluşturuyoruz
-
         List<Sporcu> availableCards = new ArrayList<>();
 
         for (Sporcu card : bilgisayar.getKartListesi()) {
