@@ -5,7 +5,7 @@ The purpose of this project is to demonstrate object-oriented programming princi
 
 In our program, which is written in Java using the NetBeans IDE and the Java Swing UI library, past scores are recorded and displayed in a simple database structure. Each athlete has an image, with their attribute points displayed on it. The game flow and score table can be tracked through this interface, and the player selects cards via the UI. The computer's randomly selected card and match type are compared with the player's chosen card. Used cards cannot be reused, and the player cannot see the computer’s cards.
 
-# METHOD
+# Method
 The Athlete (Sporcu) parent class is inherited by the Footballer (Futbolcu) and Basketball Player (Basketbolcu) classes. Similarly, the Player (Oyuncu) parent class is inherited by the User (Kullanıcı) and Computer (Bilgisayar) classes. Common attributes are defined in the parent classes, keeping the code clean and structured.The Text class is responsible for defining the athletes' attributes and names and contains the main method where the game flow is executed. The game logic is controlled and managed within the Text class.Player scores are defined as private variables and are accessed through getter and setter methods, ensuring encapsulation.
 
 
