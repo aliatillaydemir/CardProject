@@ -7,12 +7,18 @@ import java.net.URL;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.swing.Timer;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 public class Test extends javax.swing.JFrame {
     private JButton btnBasla;
+    private JButton btnBitir;
+    private JButton btnSkorlariGoster;
     private JLabel lblKullaniciSkor;
     private JLabel lblBilgisayarSkor;
     private JLabel lblsecilenOzellik;
@@ -26,6 +32,8 @@ public class Test extends javax.swing.JFrame {
     private boolean OyuncuSırasıMı = true;
     private JLabel lblAciklama;
     private StringBuilder cardText;
+    private  int kazananPuani;
+    private  String kazanan;
 
 
     private String[] FutbolcuResimleri = {
@@ -127,16 +135,27 @@ public class Test extends javax.swing.JFrame {
         btnBasla = new JButton("Oyunu Başlat");
         btnBasla.setBorderPainted(false);
         btnBasla.setFocusPainted(false);
-        btnBasla.setBackground(new Color(200, 200, 200)); // Hafif gri tonu
+        btnBasla.setBackground(new Color(200, 200, 200));
+        btnBitir = new JButton("Oyunu Bitir");
+        btnSkorlariGoster = new JButton("Skor Geçmişi");
+        btnBitir.setBorderPainted(false);
+        btnBitir.setFocusPainted(false);
+        btnBitir.setBackground(new Color(200, 200, 200));
+        btnSkorlariGoster.setBorderPainted(false);
+        btnSkorlariGoster.setFocusPainted(false);
+        btnSkorlariGoster.setBackground(new Color(200, 200, 200));
 
         lblKullaniciSkor = new JLabel("Kullanıcı Skor: 0");
         lblBilgisayarSkor = new JLabel("Bilgisayar Skor: 0");
         lblsecilenOzellik = new JLabel("Seçilen Özellik: ?");
 
         controlPanel.add(btnBasla);
+        controlPanel.add(btnBitir);
+        controlPanel.add(btnSkorlariGoster);
         controlPanel.add(lblKullaniciSkor);
         controlPanel.add(lblBilgisayarSkor);
         controlPanel.add(lblsecilenOzellik);
+
 
         contentPanel.add(controlPanel, BorderLayout.NORTH);
 
@@ -152,6 +171,7 @@ public class Test extends javax.swing.JFrame {
 
         // lambda function;
         btnBasla.addActionListener(e -> oyunuBaşlat());
+        btnBitir.addActionListener(e -> oyunuBitir());
     }
 
     // Arka planı pencerenin yeni boyutuna göre ölçeklendir
@@ -174,6 +194,18 @@ public class Test extends javax.swing.JFrame {
 
     }
 
+    private void oyunuBitir() {
+        System.out.println("Oyun Kapatılıyor...");
+        JOptionPane optionPane = new JOptionPane("UYARI:\nOyun Bitti!\nOyun Kapatılıyor...",
+        JOptionPane.INFORMATION_MESSAGE);
+        JDialog dialog = optionPane.createDialog("UYARI");
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dialog.setSize(600, 400);
+        dialog.setVisible(true);
+        Timer timer = new Timer(1000,e->System.exit(0));
+        timer.setRepeats(false);
+        timer.start();
+    }
 
     private void skorGüncelle() {
         lblKullaniciSkor.setText("Kullanıcı Skor: " + kullanıcı.getSkor());
@@ -541,7 +573,6 @@ public class Test extends javax.swing.JFrame {
             return null;
         }
     }
-
     private void checkGameOver() {
 //        System.out.println("Kullanıcı kart listesi boyutu: " + kullanıcı.getKartListesi().size());
 //        System.out.println("Bilgisayar kart listesi boyutu: " + bilgisayar.getKartListesi().size());
@@ -570,9 +601,34 @@ public class Test extends javax.swing.JFrame {
     }
 
     public static void main(String[] args) {
+        Connection conn = null;
+
+        // MSSQL Server Bağlantı Bilgileri (Windows Authentication İçin)
+        String dbURL = "jdbc:sqlserver://DESKTOP-PIQ3E57;databaseName=SkorDB;integratedSecurity=true;encrypt=true;trustServerCertificate=true";
+        String user = "sa";
+        String password = "12345";
+
+        try {
+            conn = DriverManager.getConnection(dbURL, user, password);
+            System.out.println("Veritabanına başarıyla bağlandı!");
+        } catch (SQLException e) {
+            System.out.println("Veritabanına bağlanırken bir hata oluştu!");
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                    System.out.println("Bağlantı kapatıldı.");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         SwingUtilities.invokeLater(() -> {
             Test game = new Test();
             game.setVisible(true);
         });
     }
 }
+
