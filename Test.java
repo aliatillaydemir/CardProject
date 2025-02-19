@@ -49,7 +49,7 @@ public class Test extends javax.swing.JFrame {
     private String[] BasketbolcuResimleri = {
             "images/LeBron James.jpg",
             "images/Stephen Curry.jpg",
-            "images/Shaquille.jpg", // Düzeltildi
+            "images/Shaquille.jpg",
             "images/Michael Jordan.jpg",
             "images/Kobe Bryant.jpg",
             "images/James Harden.jpg",
@@ -601,31 +601,11 @@ public class Test extends javax.swing.JFrame {
     }
 
     public static void main(String[] args) {
-        Connection conn = null;
 
-        // MSSQL Server Bağlantı Bilgileri (Windows Authentication İçin)
-        String dbURL = "jdbc:sqlserver://DESKTOP-PIQ3E57;databaseName=SkorDB;integratedSecurity=true;encrypt=true;trustServerCertificate=true";
-        String user = "sa";
-        String password = "12345";
-
-        try {
-            conn = DriverManager.getConnection(dbURL, user, password);
-            System.out.println("Veritabanına başarıyla bağlandı!");
-        } catch (SQLException e) {
-            System.out.println("Veritabanına bağlanırken bir hata oluştu!");
-            e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                    System.out.println("Bağlantı kapatıldı.");
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
+        Connection conn= VeritabaniBaglanti.baglan();
+        VeritabaniBaglanti.baglantiKapat(conn);
         SwingUtilities.invokeLater(() -> {
+
             Test game = new Test();
             game.setVisible(true);
         });
