@@ -21,7 +21,7 @@ public class Test extends javax.swing.JFrame {
     private JButton btnSkorlariGoster;
     private JLabel lblKullaniciSkor;
     private JLabel lblBilgisayarSkor;
-    private JLabel lblsecilenOzellik;
+//    private JLabel lblsecilenOzellik;
     private JLabel contentPanel;
     private JPanel middlePanel;
     private JLabel playerSelectedCard;
@@ -31,9 +31,9 @@ public class Test extends javax.swing.JFrame {
     private Bilgisayar bilgisayar;
     private boolean OyuncuSırasıMı = true;
     private JLabel lblAciklama;
+    private JButton BtnAnamenu;
     private StringBuilder cardText;
-    private  int kazananPuani;
-    private  String kazanan;
+
 
 
     private String[] FutbolcuResimleri = {
@@ -137,26 +137,34 @@ public class Test extends javax.swing.JFrame {
         btnBasla.setFocusPainted(false);
         btnBasla.setBackground(new Color(200, 200, 200));
         btnBitir = new JButton("Oyunu Bitir");
+        BtnAnamenu=new JButton("Ana Menü");
         btnSkorlariGoster = new JButton("Skor Geçmişi");
         btnBitir.setBorderPainted(false);
         btnBitir.setFocusPainted(false);
         btnBitir.setBackground(new Color(200, 200, 200));
+        BtnAnamenu.setBorderPainted(false);
+        BtnAnamenu.setFocusPainted(false);
+        BtnAnamenu.setBackground(new Color(200, 200, 200));
+//        BtnAnamenu.setVisible(false);
         btnSkorlariGoster.setBorderPainted(false);
         btnSkorlariGoster.setFocusPainted(false);
         btnSkorlariGoster.setBackground(new Color(200, 200, 200));
 
         lblKullaniciSkor = new JLabel("Kullanıcı Skor: 0");
         lblBilgisayarSkor = new JLabel("Bilgisayar Skor: 0");
-        lblsecilenOzellik = new JLabel("Seçilen Özellik: ?");
+//        lblsecilenOzellik = new JLabel("Seçilen Özellik: ?");
 
         controlPanel.add(btnBasla);
         controlPanel.add(btnBitir);
+        controlPanel.add(BtnAnamenu);
         controlPanel.add(btnSkorlariGoster);
         controlPanel.add(lblKullaniciSkor);
         controlPanel.add(lblBilgisayarSkor);
-        controlPanel.add(lblsecilenOzellik);
+//        controlPanel.add(lblsecilenOzellik);
 
-
+//        btnBasla.addActionListener(e -> {
+//            BtnAnamenu.setVisible(true);
+//        });
         contentPanel.add(controlPanel, BorderLayout.NORTH);
 
 
@@ -171,6 +179,8 @@ public class Test extends javax.swing.JFrame {
 
         // lambda function;
         btnBasla.addActionListener(e -> oyunuBaşlat());
+
+
         btnBitir.addActionListener(e -> oyunuBitir());
     }
 
@@ -219,7 +229,9 @@ public class Test extends javax.swing.JFrame {
         controlPanel.add(btnBasla);
         controlPanel.add(lblKullaniciSkor);
         controlPanel.add(lblBilgisayarSkor);
-        controlPanel.add(lblsecilenOzellik);
+        BtnAnamenu.setBounds(10, -5, 150, 30);
+        contentPanel.add(BtnAnamenu); //anamenüüye dön butonu ekledim!
+//        controlPanel.add(lblsecilenOzellik);
         contentPanel.add(controlPanel, BorderLayout.NORTH);
         JPanel gamePanel = new JPanel(new GridLayout(3, 1, 10, 10));
         JPanel computerPanel = KartPaneliOluştur("Bilgisayar Kartları", bilgisayar.getKartListesi(), true);
@@ -579,9 +591,10 @@ public class Test extends javax.swing.JFrame {
         boolean KartlarKullanildiMi = bilgisayar.getKartListesi().isEmpty() && kullanıcı.getKartListesi().isEmpty();
         if (KartlarKullanildiMi) {
             String kazanan;
+            int kullaniciSkor=kullanıcı.getSkor();
+            int pcSkor=bilgisayar.getSkor();
             if (kullanıcı.getSkor() > bilgisayar.getSkor()) {
                 kazanan = "Kullanıcı";
-                System.out.println("Kazanan : " + kazanan);
                 System.out.println("Kazanan : " + kazanan + "\nKullanıcı Puan: " + kullanıcı.getSkor() + "\nBilgisayar Puan : " + bilgisayar.getSkor());
                 ;
             } else if (kullanıcı.getSkor() < bilgisayar.getSkor()) {
@@ -589,10 +602,10 @@ public class Test extends javax.swing.JFrame {
                 System.out.println("Kazanan : " + kazanan + "\nKullanıcı Puan: " + kullanıcı.getSkor() + "\nBilgisayar Puan : " + bilgisayar.getSkor());
             } else {
                 kazanan = "Berabere";
-                System.out.println("Tur  : " + kazanan);
-                System.out.println("Kazanan : " + kazanan + "\nKullanıcı Puan: " + kullanıcı.getSkor() + "\nBilgisayar Puan : " + bilgisayar.getSkor());
+                System.out.println("Oyun  : " + kazanan);
+                System.out.println("Kullanıcı Puan: " + kullanıcı.getSkor() + "\nBilgisayar Puan : " + bilgisayar.getSkor());
             }
-
+VeritabaniBaglanti.insertSkor(kullaniciSkor,pcSkor);
             JOptionPane.showMessageDialog(this,
                     "Oyun bitti!\nKazanan: " + kazanan + "\nKullanıcı Skor: " + kullanıcı.getSkor() +
                             "\nBilgisayar Skor: " + bilgisayar.getSkor(),
