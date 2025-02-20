@@ -177,15 +177,15 @@ public class Test extends javax.swing.JFrame {
         });
 
         btnSkorlariGoster.addActionListener(e -> {
-            Connection conn = VeritabaniBaglanti.baglan(); // Veritabanına bağlan
+            Connection conn = VeritabaniBaglanti.baglan(); 
             ArrayList<String> skorlar = VeritabaniBaglanti.veriOku(conn);
 
-            JTextArea textArea = new JTextArea(30, 30); // Satır ve sütun sayısını belirle
+            JTextArea textArea = new JTextArea(30, 30);
             textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
             textArea.setEditable(false);
 
             for (String skor : skorlar) {
-                textArea.append(skor + "\n"); // Her bir skoru JTextArea'ya ekle
+                textArea.append(skor + "\n");
             }
 
             JOptionPane.showMessageDialog(null, textArea, "Skor Geçmişi", JOptionPane.INFORMATION_MESSAGE);
