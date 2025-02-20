@@ -176,6 +176,20 @@ public class Test extends javax.swing.JFrame {
             }
         });
 
+        btnSkorlariGoster.addActionListener(e -> {
+            Connection conn = VeritabaniBaglanti.baglan(); // Veritabanına bağlan
+            ArrayList<String> skorlar = VeritabaniBaglanti.veriOku(conn);
+
+            // Skorları birleştirerek String oluştur
+            StringBuilder sb = new StringBuilder();
+            for (String skor : skorlar) { //verileri  satırca kendi arasında  hallettik;
+                sb.append(skor).append("\n");
+            }
+            JTextArea textArea = new JTextArea(sb.toString(), 30, 30); // Satır ve sütun sayısını belirle
+            textArea.setEditable(false);
+            JOptionPane.showMessageDialog(null, textArea, "Skor Geçmişi", JOptionPane.INFORMATION_MESSAGE);
+
+        });
 
         // lambda function;
         btnBasla.addActionListener(e -> oyunuBaşlat());
@@ -605,7 +619,8 @@ public class Test extends javax.swing.JFrame {
                 System.out.println("Oyun  : " + kazanan);
                 System.out.println("Kullanıcı Puan: " + kullanıcı.getSkor() + "\nBilgisayar Puan : " + bilgisayar.getSkor());
             }
-VeritabaniBaglanti.insertSkor(kullaniciSkor,pcSkor);
+            VeritabaniBaglanti.insertSkor(kullaniciSkor,pcSkor);
+            VeritabaniBaglanti.veriOku(VeritabaniBaglanti.baglan());
             JOptionPane.showMessageDialog(this,
                     "Oyun bitti!\nKazanan: " + kazanan + "\nKullanıcı Skor: " + kullanıcı.getSkor() +
                             "\nBilgisayar Skor: " + bilgisayar.getSkor(),

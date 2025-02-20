@@ -1,5 +1,6 @@
 import java.sql.*;
-
+import java.sql.Statement;
+import java.util.ArrayList;
 public class VeritabaniBaglanti {
     private static final String DB_URL = "jdbc:sqlserver://DESKTOP-PIQ3E57;databaseName=SkorDB;integratedSecurity=true;encrypt=true;trustServerCertificate=true";
     private static final String USER = "sa";
@@ -48,6 +49,37 @@ public class VeritabaniBaglanti {
         }
     }
 
+    public static ArrayList<String> veriOku(Connection conn) {
+        ArrayList<String> skorListesi = new ArrayList<>();
+        if (conn == null) {
+            System.out.println("Bağlantı nesnesi null! Veritabanına bağlanmayı kontrol et.");
+            skorListesi.add("Bağlantı Hatası");
+            return skorListesi;
+        }
+
+        try {
+            Statement stmt = conn.createStatement();
+            //stmt bağlandıktan sonra query  ver; -> bütün veriyi çektik;
+        ResultSet rs=stmt.executeQuery("SELECT * FROM Skor_Table");
+        //kaç kayıt olduğunu -> meta info;
+        ResultSetMetaData rsmd = rs.getMetaData();
+            skorListesi.add(String.format("%-45s %10s %15s", "      Tarih", "PcSkor", "      KullanıcıSkor")); // Başlık
+            skorListesi.add("      --------------------------------------------------------------------");
+        //veritabanındaki columnları getirdim:
+        while (rs.next()) {
+            String satir=(String.format("%-30s %10d %15d",
+                    rs.getString(1), rs.getInt(2), rs.getInt(3)));
+            skorListesi.add(satir);
+        }
+        } catch (Exception e) {
+            e.printStackTrace();
+            skorListesi.add("Veri okunamadı!");
+        }
+        finally {
+            baglantiKapat(conn);
+        }return skorListesi;
+    }
+
 
     public static void baglantiKapat(Connection conn) {
         if (conn != null) {
@@ -59,4 +91,6 @@ public class VeritabaniBaglanti {
             }
         }
     }
+
 }
+
