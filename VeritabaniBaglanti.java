@@ -63,8 +63,8 @@ public class VeritabaniBaglanti {
         ResultSet rs=stmt.executeQuery("SELECT * FROM Skor_Table");
         //kaç kayıt olduğunu -> meta info;
         ResultSetMetaData rsmd = rs.getMetaData();
-            skorListesi.add(String.format("%-45s %10s %15s", "      Tarih", "PcSkor", "      KullanıcıSkor")); // Başlık
-            skorListesi.add("      --------------------------------------------------------------------");
+            skorListesi.add(String.format("%-25s %18s %18s", "      Tarih", "PcSkor", "KullanıcıSkor"));
+            skorListesi.add("----------------------------------------------------------------------------");
         //veritabanındaki columnları getirdim:
         while (rs.next()) {
             String satir=(String.format("%-30s %10d %15d",

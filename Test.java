@@ -186,6 +186,7 @@ public class Test extends javax.swing.JFrame {
                 sb.append(skor).append("\n");
             }
             JTextArea textArea = new JTextArea(sb.toString(), 30, 30); // Satır ve sütun sayısını belirle
+            textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
             textArea.setEditable(false);
             JOptionPane.showMessageDialog(null, textArea, "Skor Geçmişi", JOptionPane.INFORMATION_MESSAGE);
 
