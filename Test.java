@@ -21,7 +21,6 @@ public class Test extends javax.swing.JFrame {
     private JButton btnSkorlariGoster;
     private JLabel lblKullaniciSkor;
     private JLabel lblBilgisayarSkor;
-//    private JLabel lblsecilenOzellik;
     private JLabel contentPanel;
     private JPanel middlePanel;
     private JLabel playerSelectedCard;
@@ -152,7 +151,7 @@ public class Test extends javax.swing.JFrame {
 
         lblKullaniciSkor = new JLabel("Kullanıcı Skor: 0");
         lblBilgisayarSkor = new JLabel("Bilgisayar Skor: 0");
-//        lblsecilenOzellik = new JLabel("Seçilen Özellik: ?");
+
 
         controlPanel.add(btnBasla);
         controlPanel.add(btnBitir);
@@ -160,7 +159,7 @@ public class Test extends javax.swing.JFrame {
         controlPanel.add(btnSkorlariGoster);
         controlPanel.add(lblKullaniciSkor);
         controlPanel.add(lblBilgisayarSkor);
-//        controlPanel.add(lblsecilenOzellik);
+
 
 //        btnBasla.addActionListener(e -> {
 //            BtnAnamenu.setVisible(true);
@@ -177,9 +176,9 @@ public class Test extends javax.swing.JFrame {
         });
 
         btnSkorlariGoster.addActionListener(e -> {
-            Connection conn = VeritabaniBaglanti.baglan(); 
+            Connection conn = VeritabaniBaglanti.baglan();
             ArrayList<String> skorlar = VeritabaniBaglanti.veriOku(conn);
-
+            System.out.println(skorlar);
             JTextArea textArea = new JTextArea(30, 30);
             textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
             textArea.setEditable(false);
@@ -195,9 +194,13 @@ public class Test extends javax.swing.JFrame {
         // lambda function;
         btnBasla.addActionListener(e -> oyunuBaşlat());
 
-
         btnBitir.addActionListener(e -> oyunuBitir());
+        BtnAnamenu.addActionListener(e -> {
+            System.out.println("Ana menüye dönüyor....");
+            controlPanel.setVisible(false);
+        });
     }
+
 
     // Arka planı pencerenin yeni boyutuna göre ölçeklendir
     private void resizeBackground(ImageIcon backgroundIcon) {
@@ -485,9 +488,12 @@ public class Test extends javax.swing.JFrame {
                     System.out.println("Bilgisayarın  Kartı : " + BilgisayarFutbolcuKart);
                     System.out.println("---------------------------------------------");
                     System.out.println("Seçilen Özellik [Penaltı] : " + seçilenÖzellik);
-
-
+                    String turGalibi=(oyuncuPuan>bilgisayarPuan)?"Oyuncu turu kazandı!":
+                            (oyuncuPuan<bilgisayarPuan)?"Bilgisayar turu kazandı!":
+                    "Tur Berabere!";
+                    System.out.println(turGalibi);
                 }
+
                 case 1 -> {
                     oyuncuPuan = OyuncuFutbolKart.getSerbestAtis();
                     bilgisayarPuan = BilgisayarFutbolcuKart.getSerbestAtis();
@@ -496,7 +502,10 @@ public class Test extends javax.swing.JFrame {
                     System.out.println("Bilgisayarın  Kartı : " + BilgisayarFutbolcuKart);
                     System.out.println("---------------------------------------------");
                     System.out.println("Seçilen Özellik [Serbest Atış] : " + seçilenÖzellik);
-
+                    String turGalibi=(oyuncuPuan>bilgisayarPuan)?"Oyuncu turu kazandı!":
+                            (oyuncuPuan<bilgisayarPuan)?"Bilgisayar turu kazandı!":
+                                    "Tur Berabere!";
+                    System.out.println(turGalibi);
 
                 }
                 case 2 -> {
@@ -507,7 +516,10 @@ public class Test extends javax.swing.JFrame {
                     System.out.println("Bilgisayarın  Kartı : " + BilgisayarFutbolcuKart);
                     System.out.println("---------------------------------------------");
                     System.out.println("Seçilen Özellik [KaleciKarşıKarşıya] : " + seçilenÖzellik);
-
+                    String turGalibi=(oyuncuPuan>bilgisayarPuan)?"Oyuncu turu kazandı!":
+                            (oyuncuPuan<bilgisayarPuan)?"Bilgisayar turu kazandı!":
+                                    "Tur Berabere!";
+                    System.out.println(turGalibi);
                 }
             }
         } else if (oyuncuKart instanceof Basketbolcu && bilgisayarKart instanceof Basketbolcu) {
@@ -525,7 +537,10 @@ public class Test extends javax.swing.JFrame {
                     System.out.println("Bilgisayarın  Kartı : " + BilgisayarBasketbolcu);
                     System.out.println("---------------------------------------------");
                     System.out.println("Seçilen Özellik [İkilik] : " + seçilenÖzellik);
-
+                    String turGalibi=(oyuncuPuan>bilgisayarPuan)?"Oyuncu turu kazandı!":
+                            (oyuncuPuan<bilgisayarPuan)?"Bilgisayar turu kazandı!":
+                                    "Tur Berabere!";
+                    System.out.println(turGalibi);
 
                 }
                 case 1 -> {
@@ -536,7 +551,10 @@ public class Test extends javax.swing.JFrame {
                     System.out.println("Bilgisayarın  Kartı : " + BilgisayarBasketbolcu);
                     System.out.println("---------------------------------------------");
                     System.out.println("Seçilen Özellik [Üçlük] : " + seçilenÖzellik);
-
+                    String turGalibi=(oyuncuPuan>bilgisayarPuan)?"Oyuncu turu kazandı!":
+                            (oyuncuPuan<bilgisayarPuan)?"Bilgisayar turu kazandı!":
+                                    "Tur Berabere!";
+                    System.out.println(turGalibi);
                 }
                 case 2 -> {
                     oyuncuPuan = OyuncuBasketbolcu.getSerbestAtis();
@@ -546,7 +564,10 @@ public class Test extends javax.swing.JFrame {
                     System.out.println("Bilgisayarın  Kartı : " + BilgisayarBasketbolcu);
                     System.out.println("---------------------------------------------");
                     System.out.println("Seçilen Özellik [Serbest Atış] : " + seçilenÖzellik);
-
+                    String turGalibi=(oyuncuPuan>bilgisayarPuan)?"Oyuncu turu kazandı!":
+                            (oyuncuPuan<bilgisayarPuan)?"Bilgisayar turu kazandı!":
+                                    "Tur Berabere!";
+                    System.out.println(turGalibi);
                 }
             }
         }
@@ -633,6 +654,7 @@ public class Test extends javax.swing.JFrame {
 
         Connection conn= VeritabaniBaglanti.baglan();
         VeritabaniBaglanti.baglantiKapat(conn);
+        VeritabaniBaglanti.TabloOluştur(conn);
         SwingUtilities.invokeLater(() -> {
 
             Test game = new Test();

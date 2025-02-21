@@ -1,6 +1,7 @@
 import java.sql.*;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 public class VeritabaniBaglanti {
     private static final String DB_URL = "jdbc:sqlserver://DESKTOP-PIQ3E57;databaseName=SkorDB;integratedSecurity=true;encrypt=true;trustServerCertificate=true";
     private static final String USER = "sa";
@@ -23,7 +24,7 @@ public class VeritabaniBaglanti {
     public static void insertSkor(int kullaniciSkor, int pcSkor) {
         String sql = "INSERT INTO Skor_Table (Tarih, KullanıcıSkor,PcSkor) VALUES (GETDATE(), ?, ?)";
         //logger kontroll
-        System.out.println("Çalıştırılan sorgu : " +sql);
+//        System.out.println("Çalıştırılan sorgu : " +sql);
         System.out.println("Kullanıcı Skor :" +kullaniciSkor +"\tBilgisayar Skor : "+pcSkor);
         Connection conn = baglan();
 
@@ -79,7 +80,37 @@ public class VeritabaniBaglanti {
             baglantiKapat(conn);
         }return skorListesi;
     }
+public static void TabloOluştur(Connection conn) {
+        if(conn == null) {
+            System.out.println("Bağlantı Hatası...");
+            return;
+        }
+    Statement stmt = null;
+    try{
+        stmt=conn.createStatement();
+        String sql = "IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Skor_Table') " +
+                "BEGIN " +
+                "CREATE TABLE Skor_Table (" +
+                "Tarih DATETIME NULL, " +
+                "PcSkor INT NOT NULL, " +
+                "KullanıcıSkor INT NOT NULL)" +
+                "END;";
+        stmt.executeUpdate(sql);
+        System.out.println("Tablo kontrol edildi, yoksa oluşturuluyor...");
 
+    } catch (Exception e) {
+        e.printStackTrace();
+    }finally {
+        try {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+}
 
     public static void baglantiKapat(Connection conn) {
         if (conn != null) {
