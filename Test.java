@@ -654,7 +654,7 @@ public class Test extends javax.swing.JFrame {
 
         Connection conn= VeritabaniBaglanti.baglan();
         VeritabaniBaglanti.baglantiKapat(conn);
-        VeritabaniBaglanti.TabloOluştur(conn);
+
         SwingUtilities.invokeLater(() -> {
 
             Test game = new Test();
