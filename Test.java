@@ -653,6 +653,7 @@ public class Test extends javax.swing.JFrame {
     public static void main(String[] args) {
 
         Connection conn= VeritabaniBaglanti.baglan();
+        VeritabaniBaglanti.TabloOluştur(conn);
         VeritabaniBaglanti.baglantiKapat(conn);
 
         SwingUtilities.invokeLater(() -> {
