@@ -12,13 +12,18 @@ The Athlete (Sporcu) parent class is inherited by the Footballer (Futbolcu) and 
 
 ![Karşılaştırma(1-github)](https://github.com/user-attachments/assets/4020a6f2-7cc1-4950-9a72-db156008277c)
 
+
 ![karşılaştırma(2-github)](https://github.com/user-attachments/assets/4e582170-e314-4875-95ac-93d3e511d950)
 
-![output(github)](https://github.com/user-attachments/assets/b9ef6864-e7cd-4cea-8e8a-372aa6d84cb5)
+
+![output(github)](https://github.com/user-attachments/assets/e2e3f6a6-dacd-4a46-98e3-af82417ff25c)
+
 
 ![output(github-2)](https://github.com/user-attachments/assets/3c0a4b07-f33a-4806-b2b0-e5cce8089272)
 
+
 ![veriTabanı(github)](https://github.com/user-attachments/assets/275612f5-c3a9-4ea1-bbdc-83f2815c3f15)
+
 
 ![karşılaştırma(3-github)](https://github.com/user-attachments/assets/f63fcf6a-3c43-4a67-a507-25ec966d0a15)
 
