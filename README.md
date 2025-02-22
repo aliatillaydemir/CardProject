@@ -27,7 +27,7 @@ The Athlete (Sporcu) parent class is inherited by the Footballer (Futbolcu) and 
 
 ![karşılaştırma(3-github)](https://github.com/user-attachments/assets/f63fcf6a-3c43-4a67-a507-25ec966d0a15)
 
-#Result
+## Result
 The program has successfully terminated. Each time the screen is opened, the deck is shuffled differently, and the cards are distributed randomly. The computer makes random selections from the shuffled cards, while the user must choose either a football player or a basketball player. As specified, consecutive actions are not allowed. If the randomly chosen "matchup" between the user and the computer results in equal card points, the cards are returned, and the game can be played again. After all the cards are used up, a new window will display the result on the screen, showing the winner or indicating a draw.
 
 
