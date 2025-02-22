@@ -357,8 +357,8 @@ private JButton KartButonuOluştur(Sporcu card, boolean isComputer) {
     JButton button = new JButton();
     Image resizedImage = resizeImage(card.getImagePath());
 
-    // Her karta benzersiz bir ID atayalım
-    button.setName(card.getSporcuIsim()); // Butona kartın ismini ID olarak atıyoruz
+    //id->ile kartlara erişme özell
+    button.setName(card.getSporcuIsim()); // Butona kartın ismini ID atadık
 
     StringBuilder cardText = new StringBuilder("<html><center>");
 
@@ -378,7 +378,7 @@ private JButton KartButonuOluştur(Sporcu card, boolean isComputer) {
             cardText.append(basketbolcu.getSerbestAtis());
         }
     } else {
-        // Bilgisayar kartları için bir şey "?" gösterme(sil ismi)
+        // Bilgisayar kartları için bir şey "?" gösterme( kapadık )
         cardText.append(" ");
     }
 
