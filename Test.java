@@ -154,9 +154,7 @@ public class Test extends javax.swing.JFrame {
         controlPanel.add(lblBilgisayarSkor);
 
 
-//        btnBasla.addActionListener(e -> {
-//            BtnAnamenu.setVisible(true);
-//        });
+
         contentPanel.add(controlPanel, BorderLayout.NORTH);
 
 
@@ -171,7 +169,6 @@ public class Test extends javax.swing.JFrame {
         btnSkorlariGoster.addActionListener(e -> {
             Connection conn = VeritabaniBaglanti.baglan();
             ArrayList<String> skorlar = VeritabaniBaglanti.veriOku(conn);
-            System.out.println(skorlar);
             JTextArea textArea = new JTextArea(30, 30);
             textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
             textArea.setEditable(false);
@@ -208,7 +205,6 @@ public class Test extends javax.swing.JFrame {
         skorGüncelle();
         kartlarıOluştur();
         oyunKur();
-//        BilgisayarKartlariniGizle(computerButtons);
 
     }
 
