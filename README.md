@@ -31,6 +31,10 @@ The Athlete (Sporcu) parent class is inherited by the Footballer (Futbolcu) and 
 
 ![Oyunbitir(github)](https://github.com/user-attachments/assets/a3426237-9d13-48ca-a3fd-f07569f567ba)
 
+## Class Diagram
+
+![KartGame (Class Diyagram)](https://github.com/user-attachments/assets/8abd8813-ec1b-4087-bb97-c0c849036d27)
+
 
 ## Result
 The program has successfully terminated. Each time the screen is opened, the deck is shuffled differently, and the cards are distributed randomly. The computer makes random selections from the shuffled cards, while the user must choose either a football player or a basketball player. As specified, consecutive actions are not allowed. If the randomly chosen "matchup" between the user and the computer results in equal card points, the cards are returned, and the game can be played again. After all the cards are used up, a new window will display the result on the screen, showing the winner or indicating a draw. Additionally, if the user clicks the "End Game" button, the program will terminate 1 second after the button is pressed.
